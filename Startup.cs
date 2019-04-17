@@ -35,8 +35,8 @@ namespace Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            Secret = Configuration["Spotify:client_secret"];
-            ClientId = Configuration["Spotify:client_id"];
+            //Secret = Configuration["Spotify:client_secret"];
+            //ClientId = Configuration["Spotify:client_id"];
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,7 +46,7 @@ namespace Api
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseOwin(b => b.UseNancy());
+            app.UseOwin(b => b.UseNancy(options => options.Bootstrapper = new MyBootstrapper(Configuration)));
 
             app.Run(async (context) =>
             {
