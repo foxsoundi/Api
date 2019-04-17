@@ -2,5 +2,4 @@ bin
 obj
 .vs
 \.circleci/hydeToken\.txt
-
 Api\.csproj\.user
