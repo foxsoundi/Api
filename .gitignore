@@ -1,3 +1,6 @@
 bin
 obj
-.circleci/hydeToken.txt
+.vs
+\.circleci/hydeToken\.txt
+
+Api\.csproj\.user
