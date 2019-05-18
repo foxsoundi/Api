@@ -13,7 +13,7 @@ namespace Api
     {
         public MusicModule(INancyEnvironment environnement): base("v1/music")
         {
-            Get("genres", _ => JsonConvert.SerializeObject(
+            Get("genres", _ => Response.AsJson(
                                     new List<Genre>{
                                         new Genre { Name = "Rock" },
                                         new Genre { Name = "Indie"},
