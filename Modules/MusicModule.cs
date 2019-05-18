@@ -11,14 +11,10 @@ namespace Api
 {
     public class MusicModule : NancyModule
     {
+        private IDatabase database = new InMemoryDatabase();
         public MusicModule(INancyEnvironment environnement): base("v1/music")
         {
-            Get("genres", _ => Response.AsJson(
-                                    new List<Genre>{
-                                        new Genre { Name = "Rock" },
-                                        new Genre { Name = "Indie"},
-                                        new Genre { Name = "Electronic"}
-                                    }));
+            Get("genres", _ => Response.AsJson(database.GetGenres()));
         }
     }
 }
