@@ -12,9 +12,15 @@ namespace Api
     public class MusicModule : NancyModule
     {
         private IDatabase database = new InMemoryDatabase();
-        public MusicModule(INancyEnvironment environnement): base("v1/music")
+        public MusicModule(INancyEnvironment environnement) : base("v1/music")
         {
-            Get("genres", _ => Response.AsJson(database.GetGenres()));
+            Get("genres", _ => Response.AsJson(database.GetGenres().Select(
+                                    g => 
+                                    {
+                                        g.Image = "data:image/jpeg;base64," + g.Image;
+                                        return g;
+                                    })
+                               ));
         }
     }
 }
