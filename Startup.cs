@@ -46,6 +46,7 @@ namespace Api
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseStaticFiles();
             app.UseOwin(b => b.UseNancy(options => options.Bootstrapper = new MyBootstrapper(Configuration)));
 
             app.Run(async (context) =>

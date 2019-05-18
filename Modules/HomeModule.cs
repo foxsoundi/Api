@@ -13,6 +13,11 @@ namespace Api
         public HomeModule(INancyEnvironment environnement)
         {
             Get("/", _ => "Hello World!");
+            Get("/swagger-ui", _ =>
+            {
+                var url = $"{Request.Url.BasePath}/api-docs";
+                return View["docs", url];
+            });
             Get("/ping", async _ =>
             {
                 var secrets = environnement.GetValue<MySecrets>();

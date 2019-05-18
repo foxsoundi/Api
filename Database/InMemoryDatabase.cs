@@ -10,7 +10,7 @@ namespace Api
                 new Genre { Name = "Rock" },
                 new Genre { Name = "Indie"},
                 new Genre { Name = "Electronic"}
-                };
+            };
         }
     }
 }
