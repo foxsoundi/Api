@@ -13,10 +13,12 @@ namespace Api
         public HomeModule(INancyEnvironment environnement)
         {
             Get("/", _ => "Hello World!");
-            Get("/secrets", _ =>
+            Get("/ping", async _ =>
             {
                 var secrets = environnement.GetValue<MySecrets>();
-                return "toto";
+                SpotifyConnection connection = new SpotifyConnection(secrets);
+                var result = await connection.Ping();
+                return result;
             });
         }
     }
