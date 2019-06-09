@@ -1,26 +1,26 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Api.Spotify;
+using Microsoft.Extensions.Configuration;
 using Nancy;
 using Nancy.Configuration;
-using Api.Spotify;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Nancy.IO;
+using Nancy.ModelBinding;
 
 namespace Api
 {
     public class HomeModule : NancyModule
     {
         public static SpotifyConnection connection;
+        
         public HomeModule(INancyEnvironment environnement)
         {
-           
+
             Get("/", _ => "Hello World!");
             Get("/ping", async _ => await connection.Ping());
-            Get("/connect", async _ =>
+            Post("/connect", async _ =>
             {
-                var secrets = environnement.GetValue<MySecrets>();
-                connection = new SpotifyConnection(secrets);
+                MySecrets secret = this.Bind<MySecrets>();
+                // var secrets = environnement.GetValue<MySecrets>();
+                connection = new SpotifyConnection(secret);
                 return await connection.Connect();
             });
         }

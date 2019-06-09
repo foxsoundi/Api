@@ -11,6 +11,8 @@ namespace Api
         public string Id { get; set; }
         public string Secret { get; set; }
 
+        public MySecrets() { }
+
         public MySecrets(IConfiguration configuration)
         {
             Secret = configuration["Spotify:Secret"];
