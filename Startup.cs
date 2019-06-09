@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Nancy.Owin;
 
 namespace Api
@@ -16,8 +17,10 @@ namespace Api
         public IConfiguration Configuration { get; }
         public string Secret { get; set; }
         public string ClientId { get; set; }
-        public Startup(IHostingEnvironment env)
+        private readonly ILogger logger;
+        public Startup(IHostingEnvironment env, ILogger<Startup> logger)
         {
+            this.logger = logger;
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json",
@@ -29,7 +32,6 @@ namespace Api
             {
                 builder.AddUserSecrets<Startup>();
             }
-
             Configuration = builder.Build();
         }
 
@@ -45,8 +47,9 @@ namespace Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                logger.LogInformation("Development Mode");
             }
-            app.UseOwin(b => b.UseNancy(options => options.Bootstrapper = new MyBootstrapper(Configuration)));
+            app.UseOwin(b => b.UseNancy(options => options.Bootstrapper = new MyBootstrapper(Configuration, logger)));
 
             app.Run(async (context) =>
             {

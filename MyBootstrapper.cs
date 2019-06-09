@@ -1,5 +1,6 @@
 ﻿using Api;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Nancy;
 using Nancy.Bootstrapper;
 using Nancy.Configuration;
@@ -11,10 +12,17 @@ namespace Api
     {
         private readonly IConfiguration Configuration;
         private readonly MySecrets Secrets;
-        public MyBootstrapper(IConfiguration configuration)
+        private readonly ILogger logger;
+        public MyBootstrapper(IConfiguration configuration, ILogger logger)
         {
             Configuration = configuration;
+            this.logger = logger;
             Secrets = new MySecrets(configuration);
+            if (string.IsNullOrEmpty(Secrets.Id))
+                logger.LogError("Secret Id is missing");
+
+            if (string.IsNullOrEmpty(Secrets.Secret))
+                logger.LogError("Secret secret is missing");
         }
 
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
