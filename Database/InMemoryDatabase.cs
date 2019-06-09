@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Api
 {
-    public class InMemoryDatabase : IDatabase
+    public class MyInMemoryDatabase : IDatabase
     {
         public List<Genre> GetGenres()
         {

@@ -11,7 +11,7 @@ namespace Api
 {
     public class MusicModule : NancyModule
     {
-        private IDatabase database = new InMemoryDatabase();
+        private IDatabase database = new MyInMemoryDatabase();
         public MusicModule(INancyEnvironment environnement) : base("v1/music")
         {
             Get("genres", _ => Response.AsJson(database.GetGenres().Select(
