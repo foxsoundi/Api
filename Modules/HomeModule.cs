@@ -11,7 +11,7 @@ namespace Api
 {
     public class HomeModule : NancyModule
     {
-        static SpotifyConnection connection;
+        public static SpotifyConnection connection;
         public HomeModule(INancyEnvironment environnement)
         {
            

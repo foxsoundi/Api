@@ -14,13 +14,10 @@ namespace Api
         private IDatabase database = new MyInMemoryDatabase();
         public MusicModule(INancyEnvironment environnement) : base("v1/music")
         {
-            Get("genres", _ => Response.AsJson(database.GetGenres().Select(
-                                    g => 
-                                    {
-                                        g.Image = "data:image/jpeg;base64," + g.Image;
-                                        return g;
-                                    })
-                               ));
+            Get("genres", _ =>
+            {
+                return HomeModule.connection.GetGenres();
+            });
         }
     }
 }

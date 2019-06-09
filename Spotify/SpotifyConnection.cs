@@ -24,6 +24,13 @@ namespace Api.Spotify
                     Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{secret.Id}:{secret.Secret}")));
         }
 
+        internal async Task<string> GetGenres()
+        {
+            Uri trackUrl = new Uri($"https://api.spotify.com/v1/browse/categories");
+            HttpResponseMessage response = await client.GetAsync(trackUrl);
+            return await response.Content.ReadAsStringAsync();
+        }
+
         async public Task<HttpStatusCode> Connect()
         {
             Dictionary<string, string> payload = new Dictionary<string, string>();
