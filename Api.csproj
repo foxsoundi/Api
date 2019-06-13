@@ -11,9 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="SpotifyTest\**" />
     <Compile Remove="Spotify\**" />
+    <Content Remove="SpotifyTest\**" />
     <Content Remove="Spotify\**" />
+    <EmbeddedResource Remove="SpotifyTest\**" />
     <EmbeddedResource Remove="Spotify\**" />
+    <None Remove="SpotifyTest\**" />
     <None Remove="Spotify\**" />
   </ItemGroup>
 
