@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -8,6 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Api.Spotify
 {
@@ -26,14 +26,14 @@ namespace Api.Spotify
             triggerReconnect += async (t, e) => await Connect();
         }
 
-        internal async Task<string> GetGenres()
+        public async Task<string> GetGenres()
         {
             Uri GenresUrl = new Uri($"https://api.spotify.com/v1/browse/categories");
             HttpResponseMessage response = await client.GetAsync(GenresUrl);
             return await response.Content.ReadAsStringAsync();
         }
 
-        internal async Task<HttpStatusCode> Connect()
+        public async Task<HttpStatusCode> Connect()
         {
             Dictionary<string, string> payload = new Dictionary<string, string>();
             payload.Add("grant_type", "client_credentials");
@@ -62,7 +62,7 @@ namespace Api.Spotify
             triggerReconnect?.Invoke(this, null);
         }
 
-        internal async Task<string> GetTrack(string id)
+        public async Task<string> GetTrack(string id)
         {
             Uri trackUrl = new Uri($"https://api.spotify.com/v1/tracks/{id}?market=FR");
             HttpResponseMessage response = await client.GetAsync(trackUrl);
@@ -71,7 +71,7 @@ namespace Api.Spotify
             return content;
         }
 
-        internal async Task<string> GetPlaylist(string genreId)
+        public async Task<string> GetPlaylist(string genreId)
         {
             Uri playlistUrl = new Uri($"https://api.spotify.com/v1/browse/categories/{genreId}");
             HttpResponseMessage response = await client.GetAsync(playlistUrl);
@@ -79,8 +79,7 @@ namespace Api.Spotify
             return res;
         }
 
-
-        internal async Task<HttpStatusCode> Ping()
+        public async Task<HttpStatusCode> Ping()
         {
             string spotIdTest = "6ZEYvUSgON3J5Qe1RYi3Jo";
             Uri trackUrl = new Uri($"https://api.spotify.com/v1/tracks/{spotIdTest}");
