@@ -11,6 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Spotify\**" />
+    <Content Remove="Spotify\**" />
+    <EmbeddedResource Remove="Spotify\**" />
+    <None Remove="Spotify\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.2.4" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="2.2.0" />
@@ -18,11 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Spotify\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Spotify\Spotify.csproj" />
+    <ProjectReference Include="Spotify\Spotify.csproj" />
   </ItemGroup>
 
 </Project>
