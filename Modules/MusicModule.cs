@@ -11,7 +11,6 @@ namespace Api
 {
     public class MusicModule : NancyModule
     {
-        private IDatabase database = new MyInMemoryDatabase();
         public MusicModule(INancyEnvironment environnement) : base("v1/music")
         {
             Get("playlists/{genre}", async parameter => await HomeModule.connection.GetPlaylist(parameter.genre));
