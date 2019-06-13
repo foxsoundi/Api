@@ -27,7 +27,11 @@ namespace Api
 
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
-            // your customization goes here
+            pipelines.OnError += (ctx, ex) =>
+            {
+                logger.LogError(ex.Message);
+                return ex;
+            };
         }
 
         public override void Configure(INancyEnvironment environment)

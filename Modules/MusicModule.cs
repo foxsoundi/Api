@@ -14,10 +14,9 @@ namespace Api
         private IDatabase database = new MyInMemoryDatabase();
         public MusicModule(INancyEnvironment environnement) : base("v1/music")
         {
-            Get("genres", _ =>
-            {
-                return HomeModule.connection.GetGenres();
-            });
+            Get("playlists/{genre}", async parameter => await HomeModule.connection.GetPlaylist(parameter.genre));
+            Get("genres", async _ => await HomeModule.connection.GetGenres());
+            Get("track/{id}", async parameter => await HomeModule.connection.GetTrack(parameter.id));
         }
     }
 }
