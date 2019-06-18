@@ -13,17 +13,15 @@ namespace Api.Spotify
 {
     public class SpotifyConnection
     {
-        private readonly HttpClient client = new HttpClient();
-        private event EventHandler triggerReconnect;
+        private readonly HttpClient client;
         private Access access;
 
-        public SpotifyConnection(MySecrets secret)
+        public SpotifyConnection(MySecrets secret, HttpClient client)
         {
             var scopes = "user-read-private user-read-email";
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", 
                     Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{secret.Id}:{secret.Secret}")));
-            triggerReconnect += async (t, e) => await Connect();
         }
 
         public async Task<string> GetGenres()
@@ -35,8 +33,10 @@ namespace Api.Spotify
 
         public async Task<HttpStatusCode> Connect()
         {
-            Dictionary<string, string> payload = new Dictionary<string, string>();
-            payload.Add("grant_type", "client_credentials");
+            Dictionary<string, string> payload = new Dictionary<string, string>
+            {
+                { "grant_type", "client_credentials"}
+            };
 
             Uri url = new Uri("https://accounts.spotify.com/api/token/");
             HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Post, url)
@@ -50,17 +50,16 @@ namespace Api.Spotify
 
             string content = await res.Content.ReadAsStringAsync();
             AccessDto accessDto = JsonConvert.DeserializeObject<AccessDto>(content);
-            access = new Access(accessDto);
-            Task refreshTask = Task.Run(async () => await ReconnectIn(access.ExpireIn));
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(access.Type, access.Token);
+            access = new Access(accessDto, async () =>
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
+                    Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{secret.Id}:{secret.Secret}")));
+                await Connect();
+            });
+            client.DefaultRequestHeaders.Authorization = await access.AddAuthentication();
             return HttpStatusCode.OK;
         }
 
-        private async Task ReconnectIn(TimeSpan timespan)
-        {
-            await Task.Delay(timespan - TimeSpan.FromSeconds(10));
-            triggerReconnect?.Invoke(this, null);
-        }
 
         public async Task<string> GetTrack(string id)
         {

@@ -6,6 +6,7 @@ using Nancy.Configuration;
 using Nancy.IO;
 using Nancy.ModelBinding;
 using System;
+using System.Net.Http;
 
 namespace Api
 {
@@ -20,7 +21,7 @@ namespace Api
             {
                 MySecrets secret = this.Bind<MySecrets>();
                 // var secrets = environnement.GetValue<MySecrets>();
-                connection = new SpotifyConnection(secret);
+                connection = new SpotifyConnection(secret, new HttpClient());
                 return await connection.Connect();
             });
         }

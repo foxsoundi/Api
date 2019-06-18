@@ -16,7 +16,7 @@ namespace Api.Spotify
         public string Type { get; set; }
 
         [DataMember(Name = "expires_in")]
-        public int ExpireIn { get; set; }
+        public int ExpireInSeconds { get; set; }
 
         [DataMember(Name = "scope")]
         public string Scope { get; set; }
