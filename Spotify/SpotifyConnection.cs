@@ -15,9 +15,11 @@ namespace Api.Spotify
     {
         private readonly HttpClient client;
         private Access access;
+        private MySecrets secret;
 
         public SpotifyConnection(MySecrets secret, HttpClient client)
         {
+            this.secret = secret;
             var scopes = "user-read-private user-read-email";
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", 
@@ -56,7 +58,7 @@ namespace Api.Spotify
                     Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{secret.Id}:{secret.Secret}")));
                 await Connect();
             });
-            client.DefaultRequestHeaders.Authorization = await access.AddAuthentication();
+            client.DefaultRequestHeaders.Authorization = await access.GetAuthentication();
             return HttpStatusCode.OK;
         }
 
@@ -85,6 +87,14 @@ namespace Api.Spotify
             HttpResponseMessage response = await client.GetAsync(trackUrl);
 
             return response.StatusCode;
+        }
+
+        public async Task<string> GetAlbums(string albumId)
+        {
+            Uri playlistUrl = new Uri($"https://api.spotify.com/v1/albums/{albumId}");
+            HttpResponseMessage response = await client.GetAsync(playlistUrl);
+            var res = await response.Content.ReadAsStringAsync();
+            return res;
         }
     }
 }
