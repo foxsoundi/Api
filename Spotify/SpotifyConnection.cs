@@ -11,30 +11,6 @@ using Newtonsoft.Json;
 
 namespace Api.Spotify
 {
-    public class GenreConnection
-    {
-        private readonly HttpClient client;
-
-        public GenreConnection(HttpClient spotifyConnection)
-        {
-            client = spotifyConnection;
-        }
-
-        public async Task<string> GetGenres(string genreId)
-        {
-            Uri GenresUrl = new Uri($"https://api.spotify.com/v1/browse/categories/{genreId}");
-            HttpResponseMessage response = await client.GetAsync(GenresUrl);
-            return await response.Content.ReadAsStringAsync();
-        }
-
-        public async Task<string> GetGenres()
-        {
-            Uri GenresUrl = new Uri($"https://api.spotify.com/v1/browse/categories");
-            HttpResponseMessage response = await client.GetAsync(GenresUrl);
-            return await response.Content.ReadAsStringAsync();
-        }
-    }
-
     public class SpotifyConnection
     {
         private readonly HttpClient client;
@@ -121,6 +97,24 @@ namespace Api.Spotify
         public string GetCurrentToken()
         {
             return access.Token;
+        }
+
+        public async Task<string> GetTracks()
+        {
+            Uri trackUrl = new Uri($"https://api.spotify.com/v1/tracks");
+            HttpResponseMessage response = await client.GetAsync(trackUrl);
+            string content = await response.Content.ReadAsStringAsync();
+
+            return content;
+        }
+
+        public async Task<string> GetAudioFeature()
+        {
+            Uri trackUrl = new Uri($"https://api.spotify.com/v1/audio-features");
+            HttpResponseMessage response = await client.GetAsync(trackUrl);
+            string content = await response.Content.ReadAsStringAsync();
+
+            return content;
         }
     }
 }
