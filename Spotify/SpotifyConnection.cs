@@ -15,7 +15,7 @@ namespace Api.Spotify
     {
         private readonly HttpClient client;
         private Access access;
-        private MySecrets secret;
+        private readonly MySecrets secret;
 
         public SpotifyConnection(MySecrets secret, HttpClient client)
         {
@@ -24,10 +24,12 @@ namespace Api.Spotify
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", 
                     Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{secret.Id}:{secret.Secret}")));
-            AlbumConnection = new AlbumConnection(client);
+            AlbumConnection = new AlbumConnection(ref this.client);
+            ArtistConnection = new ArtistConnection(ref this.client);
         }
 
         public AlbumConnection AlbumConnection { get; }
+        public ArtistConnection ArtistConnection { get; }
 
         public async Task<string> GetGenres()
         {

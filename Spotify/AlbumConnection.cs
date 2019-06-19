@@ -8,7 +8,7 @@ namespace Api.Spotify
     {
         private HttpClient client;
 
-        public AlbumConnection(HttpClient client)
+        public AlbumConnection(ref HttpClient client)
         {
             this.client = client;
         }
