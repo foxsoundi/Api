@@ -35,7 +35,7 @@ namespace Api.Spotify
             };
         }
 
-        public async Task<AuthenticationHeaderValue> AddAuthentication()
+        public async Task<AuthenticationHeaderValue> GetAuthentication()
         {
             reconnectThread.Start();
             return new AuthenticationHeaderValue(Type, Token);

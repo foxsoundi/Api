@@ -27,7 +27,7 @@ namespace Tests
             Mock<Action> connect = new Mock<Action>();
 
             Access access = new Access(dto, connect.Object);
-            await access.AddAuthentication();
+            await access.GetAuthentication();
 
             connect.Verify(x => x.Invoke(), Times.AtLeastOnce);
         }
@@ -45,7 +45,7 @@ namespace Tests
             Mock<Action> connect = new Mock<Action>();
 
             Access access = new Access(dto, connect.Object);
-            await access.AddAuthentication();
+            await access.GetAuthentication();
 
             Thread.Sleep(TimeSpan.FromSeconds(4));
 
