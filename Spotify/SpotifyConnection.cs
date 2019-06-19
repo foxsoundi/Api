@@ -89,7 +89,7 @@ namespace Api.Spotify
             return response.StatusCode;
         }
 
-        public async Task<string> GetAlbums(string albumId)
+        public async Task<string> GetAlbum(string albumId)
         {
             Uri playlistUrl = new Uri($"https://api.spotify.com/v1/albums/{albumId}");
             HttpResponseMessage response = await client.GetAsync(playlistUrl);
@@ -100,6 +100,22 @@ namespace Api.Spotify
         public string GetCurrentToken()
         {
             return access.Token;
+        }
+
+        public async Task<string> GetAlbums()
+        {
+            Uri playlistUrl = new Uri($"https://api.spotify.com/v1/albums");
+            HttpResponseMessage response = await client.GetAsync(playlistUrl);
+            var res = await response.Content.ReadAsStringAsync();
+            return res;
+        }
+
+        public async Task<string> GetAlbumsTracks(object albumId)
+        {
+            Uri playlistUrl = new Uri($"https://api.spotify.com/v1/albums/{albumId}/tracks");
+            HttpResponseMessage response = await client.GetAsync(playlistUrl);
+            var res = await response.Content.ReadAsStringAsync();
+            return res;
         }
     }
 }

@@ -11,7 +11,9 @@ namespace Api.Modules
     {
         public AlbumModule() : base("v1/music/albums")
         {
-            Get("{albumId}", async parameters => HomeModule.connection.GetAlbums(parameters.albumId));
+            Get("", async _ => HomeModule.connection.GetAlbums());
+            Get("{albumId}", async parameters => HomeModule.connection.GetAlbum(parameters.albumId));
+            Get("{albumId}/tracks", async parameters => HomeModule.connection.GetAlbumTracks(parameters.albumId));
         }
     }
 }
