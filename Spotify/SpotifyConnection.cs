@@ -96,5 +96,10 @@ namespace Api.Spotify
             var res = await response.Content.ReadAsStringAsync();
             return res;
         }
+
+        public string GetCurrentToken()
+        {
+            return access.Token;
+        }
     }
 }
