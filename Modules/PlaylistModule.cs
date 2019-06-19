@@ -11,7 +11,7 @@ namespace Api.Modules
     {
         public PlaylistModule(INancyEnvironment environment) : base("v1/music/playlist")
         {
-            Get("{genre}", async parameter => await HomeModule.connection.GetPlaylist(parameter.genre));
+            Get("{playListId}", async parameter => await HomeModule.connection.PlaylistConnection.GetPlaylist(parameter.playListId));
         }
     }
 }

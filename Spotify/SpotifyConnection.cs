@@ -11,11 +11,38 @@ using Newtonsoft.Json;
 
 namespace Api.Spotify
 {
+    public class GenreConnection
+    {
+        private readonly HttpClient client;
+
+        public GenreConnection(HttpClient spotifyConnection)
+        {
+            client = spotifyConnection;
+        }
+
+        public async Task<string> GetGenres(string genreId)
+        {
+            Uri GenresUrl = new Uri($"https://api.spotify.com/v1/browse/categories/{genreId}");
+            HttpResponseMessage response = await client.GetAsync(GenresUrl);
+            return await response.Content.ReadAsStringAsync();
+        }
+
+        public async Task<string> GetGenres()
+        {
+            Uri GenresUrl = new Uri($"https://api.spotify.com/v1/browse/categories");
+            HttpResponseMessage response = await client.GetAsync(GenresUrl);
+            return await response.Content.ReadAsStringAsync();
+        }
+    }
+
     public class SpotifyConnection
     {
         private readonly HttpClient client;
+
         private Access access;
         private readonly MySecrets secret;
+        private readonly PlaylistConnection playlistConnection;
+        private readonly GenreConnection genreConnection;
 
         public SpotifyConnection(MySecrets secret, HttpClient client)
         {
@@ -26,16 +53,21 @@ namespace Api.Spotify
                     Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{secret.Id}:{secret.Secret}")));
             AlbumConnection = new AlbumConnection(ref this.client);
             ArtistConnection = new ArtistConnection(ref this.client);
+            playlistConnection = new PlaylistConnection(ref this.client);
+            genreConnection = new GenreConnection(ref this.client);
         }
 
         public AlbumConnection AlbumConnection { get; }
         public ArtistConnection ArtistConnection { get; }
 
-        public async Task<string> GetGenres()
+        public PlaylistConnection PlaylistConnection
         {
-            Uri GenresUrl = new Uri($"https://api.spotify.com/v1/browse/categories");
-            HttpResponseMessage response = await client.GetAsync(GenresUrl);
-            return await response.Content.ReadAsStringAsync();
+            get { return playlistConnection; }
+        }
+
+        public GenreConnection GenreConnection
+        {
+            get { return genreConnection; }
         }
 
         public async Task<HttpStatusCode> Connect()
@@ -75,14 +107,6 @@ namespace Api.Spotify
             string content = await response.Content.ReadAsStringAsync();
 
             return content;
-        }
-
-        public async Task<string> GetPlaylist(string genreId)
-        {
-            Uri playlistUrl = new Uri($"https://api.spotify.com/v1/browse/categories/{genreId}");
-            HttpResponseMessage response = await client.GetAsync(playlistUrl);
-            var res = await response.Content.ReadAsStringAsync();
-            return res;
         }
 
         public async Task<HttpStatusCode> Ping()
