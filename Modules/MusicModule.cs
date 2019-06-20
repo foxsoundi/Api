@@ -13,7 +13,7 @@ namespace Api
     {
         public MusicModule(INancyEnvironment environnement) : base("v1/music")
         {
-            Get("track/{id}", async parameter => await HomeModule.connection.GetTrack(parameter.id));
+             Get("audio-feature", async _ => await HomeModule.connection.TrackConnection.GetAudioFeature());
         }
     }
 }

@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading;
 using System.Threading.Tasks;
+using Api;
+using Api.Spotify;
 using Newtonsoft.Json;
 
-namespace Api.Spotify
+namespace Spotify.Connections
 {
     public class SpotifyConnection
     {
@@ -17,8 +16,6 @@ namespace Api.Spotify
 
         private Access access;
         private readonly MySecrets secret;
-        private readonly PlaylistConnection playlistConnection;
-        private readonly GenreConnection genreConnection;
 
         public SpotifyConnection(MySecrets secret, HttpClient client)
         {
@@ -29,22 +26,16 @@ namespace Api.Spotify
                     Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{secret.Id}:{secret.Secret}")));
             AlbumConnection = new AlbumConnection(ref this.client);
             ArtistConnection = new ArtistConnection(ref this.client);
-            playlistConnection = new PlaylistConnection(ref this.client);
-            genreConnection = new GenreConnection(ref this.client);
+            PlaylistConnection = new PlaylistConnection(ref this.client);
+            GenreConnection = new GenreConnection(ref this.client);
+            TrackConnection = new TrackConnection(ref this.client);
         }
 
         public AlbumConnection AlbumConnection { get; }
         public ArtistConnection ArtistConnection { get; }
-
-        public PlaylistConnection PlaylistConnection
-        {
-            get { return playlistConnection; }
-        }
-
-        public GenreConnection GenreConnection
-        {
-            get { return genreConnection; }
-        }
+        public PlaylistConnection PlaylistConnection { get; }
+        public GenreConnection GenreConnection { get; }
+        public TrackConnection TrackConnection { get; }
 
         public async Task<HttpStatusCode> Connect()
         {
@@ -56,7 +47,7 @@ namespace Api.Spotify
             Uri url = new Uri("https://accounts.spotify.com/api/token/");
             HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Post, url)
             {
-                Content = new FormUrlEncodedContent (payload)
+                Content = new FormUrlEncodedContent(payload)
             };
 
             HttpResponseMessage res = await client.SendAsync(req);
@@ -75,16 +66,6 @@ namespace Api.Spotify
             return HttpStatusCode.OK;
         }
 
-
-        public async Task<string> GetTrack(string id)
-        {
-            Uri trackUrl = new Uri($"https://api.spotify.com/v1/tracks/{id}?market=FR");
-            HttpResponseMessage response = await client.GetAsync(trackUrl);
-            string content = await response.Content.ReadAsStringAsync();
-
-            return content;
-        }
-
         public async Task<HttpStatusCode> Ping()
         {
             string spotIdTest = "6ZEYvUSgON3J5Qe1RYi3Jo";
@@ -97,24 +78,6 @@ namespace Api.Spotify
         public string GetCurrentToken()
         {
             return access.Token;
-        }
-
-        public async Task<string> GetTracks()
-        {
-            Uri trackUrl = new Uri($"https://api.spotify.com/v1/tracks");
-            HttpResponseMessage response = await client.GetAsync(trackUrl);
-            string content = await response.Content.ReadAsStringAsync();
-
-            return content;
-        }
-
-        public async Task<string> GetAudioFeature()
-        {
-            Uri trackUrl = new Uri($"https://api.spotify.com/v1/audio-features");
-            HttpResponseMessage response = await client.GetAsync(trackUrl);
-            string content = await response.Content.ReadAsStringAsync();
-
-            return content;
         }
     }
 }

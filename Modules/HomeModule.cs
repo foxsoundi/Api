@@ -7,6 +7,7 @@ using Nancy.IO;
 using Nancy.ModelBinding;
 using System;
 using System.Net.Http;
+using Spotify.Connections;
 
 namespace Api
 {

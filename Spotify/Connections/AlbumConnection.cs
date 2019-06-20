@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Api.Spotify
+namespace Spotify.Connections
 {
     public class AlbumConnection
     {

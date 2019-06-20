@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Api.Spotify
+namespace Spotify.Connections
 {
     public class PlaylistConnection
     {
@@ -16,7 +16,6 @@ namespace Api.Spotify
         public async Task<string> GetPlaylist(string playlistId)
         {
             Uri playlistUrl = new Uri($"https://api.spotify.com/v1/playlists/{playlistId}");
-            Uri url = new Uri($"https://api.spotify.com/v1/browse/categories/{genreId}");
             HttpResponseMessage response = await client.GetAsync(playlistUrl);
             var res = await response.Content.ReadAsStringAsync();
             return res;
