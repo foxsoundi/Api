@@ -24,6 +24,7 @@ namespace Spotify.Connections
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", 
                     Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{secret.Id}:{secret.Secret}")));
+            this.client = client;
             AlbumConnection = new AlbumConnection(ref this.client);
             ArtistConnection = new ArtistConnection(ref this.client);
             PlaylistConnection = new PlaylistConnection(ref this.client);
@@ -49,20 +50,28 @@ namespace Spotify.Connections
             {
                 Content = new FormUrlEncodedContent(payload)
             };
-
-            HttpResponseMessage res = await client.SendAsync(req);
-            if (!res.IsSuccessStatusCode)
-                return res.StatusCode;
-
-            string content = await res.Content.ReadAsStringAsync();
-            AccessDto accessDto = JsonConvert.DeserializeObject<AccessDto>(content);
-            access = new Access(accessDto, async () =>
+            try
             {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
-                    Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{secret.Id}:{secret.Secret}")));
-                await Connect();
-            });
-            client.DefaultRequestHeaders.Authorization = await access.GetAuthentication();
+
+
+                HttpResponseMessage res = await client.SendAsync(req);
+                if (!res.IsSuccessStatusCode)
+                    return res.StatusCode;
+
+                string content = await res.Content.ReadAsStringAsync();
+                AccessDto accessDto = JsonConvert.DeserializeObject<AccessDto>(content);
+                access = new Access(accessDto, async () =>
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
+                        Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{secret.Id}:{secret.Secret}")));
+                    await Connect();
+                });
+                client.DefaultRequestHeaders.Authorization = await access.GetAuthentication();
+            }
+            catch (Exception e)
+            {
+
+            }
             return HttpStatusCode.OK;
         }
 
