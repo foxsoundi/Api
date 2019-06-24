@@ -13,14 +13,13 @@ namespace Spotify.Connections
     public class SpotifyConnection
     {
         private readonly HttpClient client;
-
         private Access access;
         private readonly MySecrets secret;
 
         public SpotifyConnection(MySecrets secret, HttpClient client)
         {
             this.secret = secret;
-            var scopes = "user-read-private user-read-email";
+            // var scopes = "user-read-private user-read-email";
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", 
                     Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{secret.Id}:{secret.Secret}")));
@@ -64,7 +63,7 @@ namespace Spotify.Connections
                         Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{secret.Id}:{secret.Secret}")));
                     await Connect();
                 });
-                client.DefaultRequestHeaders.Authorization = await access.GetAuthentication();
+                client.DefaultRequestHeaders.Authorization = access.GetAuthentication();
             }
             catch (Exception e)
             {
