@@ -52,8 +52,6 @@ namespace Spotify.Connections
             };
             try
             {
-
-
                 HttpResponseMessage res = await client.SendAsync(req);
                 if (!res.IsSuccessStatusCode)
                     return res.StatusCode;
@@ -70,7 +68,7 @@ namespace Spotify.Connections
             }
             catch (Exception e)
             {
-
+                throw e;
             }
             return HttpStatusCode.OK;
         }
