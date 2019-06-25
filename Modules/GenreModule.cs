@@ -10,8 +10,8 @@ namespace Api.Modules
     {
         public GenreModule() : base("v1/music/genre")
         {
-            Get("{genreId}", async parameters => await HomeModule.connection.GenreConnection.GetGenres(parameters.genreId));
-            Get("", async parameters => await HomeModule.connection.GenreConnection.GetGenres(parameters.genreId));
+            Get("{genreId}", async parameters => await HomeController.connection.GenreConnection.GetGenres(parameters.genreId));
+            Get("", async parameters => await HomeController.connection.GenreConnection.GetGenres(parameters.genreId));
         }
     }
 }

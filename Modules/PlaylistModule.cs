@@ -2,16 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Nancy;
 using Nancy.Configuration;
 
 namespace Api.Modules
 {
-    public class PlaylistModule : NancyModule
+    [Route("v1/music/playlist")]
+    [Produces("application/json")]
+    [ApiController]
+    public class PlaylistModule : ControllerBase
     {
-        public PlaylistModule(INancyEnvironment environment) : base("v1/music/playlist")
+        [HttpGet]
+        public async Task<ActionResult<string>> GetPlaylist(string playlistId)
         {
-            Get("{playListId}", async parameter => await HomeModule.connection.PlaylistConnection.GetPlaylist(parameter.playListId));
+            return await HomeController.connection.PlaylistConnection.GetPlaylist(playlistId);
         }
     }
 }

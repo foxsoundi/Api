@@ -10,7 +10,7 @@ namespace Api.Modules
     {
         public PlayerModule() : base("v1/player")
         {
-            Get("token", _ => HomeModule.connection.GetCurrentToken());
+            Get("token", _ => HomeController.connection.GetCurrentToken());
         }
     }
 }

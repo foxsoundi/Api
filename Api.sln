@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpotifyTest", "SpotifyTest\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "..\Db\Database\Database.csproj", "{4CE74552-7316-4BFF-97C5-884C188D4EB3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCFapi", "..\WcfApi\WCFapi\WCFapi.csproj", "{D5D2CC1A-E452-4CD7-B622-770D3F8FC536}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{4CE74552-7316-4BFF-97C5-884C188D4EB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CE74552-7316-4BFF-97C5-884C188D4EB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CE74552-7316-4BFF-97C5-884C188D4EB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5D2CC1A-E452-4CD7-B622-770D3F8FC536}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5D2CC1A-E452-4CD7-B622-770D3F8FC536}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5D2CC1A-E452-4CD7-B622-770D3F8FC536}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5D2CC1A-E452-4CD7-B622-770D3F8FC536}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

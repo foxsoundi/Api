@@ -10,11 +10,11 @@ namespace Api.Modules
     {
         public ArtistModule() : base("v1/music/artist")
         {
-            Get("", async _ => await HomeModule.connection.ArtistConnection.GetArtists());
-            Get("{artistId}", async parameters => await HomeModule.connection.ArtistConnection.GetArtist(parameters.artistId));
-            Get("{artistId}/albums", async parameters => await HomeModule.connection.ArtistConnection.GetArtistAlbums(parameters.artistId));
-            Get("{artistId}/tops", async parameters => await HomeModule.connection.ArtistConnection.GetArtistTops(parameters.artistId));
-            Get("{artistId}/related-artists", async parameters => await HomeModule.connection.ArtistConnection.GetArtistRelateds(parameters.artistId));
+            Get("", async _ => await HomeController.connection.ArtistConnection.GetArtists());
+            Get("{artistId}", async parameters => await HomeController.connection.ArtistConnection.GetArtist(parameters.artistId));
+            Get("{artistId}/albums", async parameters => await HomeController.connection.ArtistConnection.GetArtistAlbums(parameters.artistId));
+            Get("{artistId}/tops", async parameters => await HomeController.connection.ArtistConnection.GetArtistTops(parameters.artistId));
+            Get("{artistId}/related-artists", async parameters => await HomeController.connection.ArtistConnection.GetArtistRelateds(parameters.artistId));
         }
     }
 }

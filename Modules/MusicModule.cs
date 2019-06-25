@@ -11,9 +11,9 @@ namespace Api
 {
     public class MusicModule : NancyModule
     {
-        public MusicModule(INancyEnvironment environnement) : base("v1/music")
-        {
-             Get("audio-feature", async _ => await HomeModule.connection.TrackConnection.GetAudioFeature());
-        }
+        //public MusicModule(INancyEnvironment environnement) : base("v1/music")
+        //{
+        //     Get("audio-feature", async _ => await HomeController.connection.TrackConnection.GetAudioFeature());
+        //}
     }
 }
