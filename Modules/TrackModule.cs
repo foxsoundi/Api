@@ -10,8 +10,8 @@ namespace Api.Modules
     {
         public TrackModule() : base("v1/music/track")
         {
-            Get("track/{id}", async parameter => await HomeModule.connection.TrackConnection.GetTrack(parameter.id));
-            Get("track", async _ => await HomeModule.connection.TrackConnection.GetTracks());
+            Get("/{id}", async parameter => await HomeModule.connection.TrackConnection.GetTrack(parameter.id));
+            Get("/", async _ => await HomeModule.connection.TrackConnection.GetTracks());
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Tests
     public class SpotifyTest
     {
         [Test]
-        public async Task Should_connect_once()
+        public void Should_connect_once()
         {
             AccessDto dto = new AccessDto
             {
@@ -27,13 +27,15 @@ namespace Tests
             Mock<Action> connect = new Mock<Action>();
 
             Access access = new Access(dto, connect.Object);
-            await access.GetAuthentication();
+            access.GetAuthentication();
+
+            Thread.Sleep(TimeSpan.FromSeconds(6));
 
             connect.Verify(x => x.Invoke(), Times.AtLeastOnce);
         }
 
         [Test]
-        public async Task Should_connect_multiple_times()
+        public void Should_connect_multiple_times()
         {
             AccessDto dto = new AccessDto
             {
@@ -45,7 +47,7 @@ namespace Tests
             Mock<Action> connect = new Mock<Action>();
 
             Access access = new Access(dto, connect.Object);
-            await access.GetAuthentication();
+            access.GetAuthentication();
 
             Thread.Sleep(TimeSpan.FromSeconds(4));
 

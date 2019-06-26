@@ -27,6 +27,14 @@ namespace Api
 
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
+            //CORS Enable
+            pipelines.AfterRequest.AddItemToEndOfPipeline((ctx) =>
+            {
+                ctx.Response.WithHeader("Access-Control-Allow-Origin", "*")
+                    .WithHeader("Access-Control-Allow-Methods", "POST,GET")
+                    .WithHeader("Access-Control-Allow-Headers", "Accept, Origin, Content-type");
+
+            });
             pipelines.OnError += (ctx, ex) =>
             {
                 logger.LogError(ex.Message);
