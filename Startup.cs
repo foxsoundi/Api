@@ -40,7 +40,23 @@ namespace Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<FoxsoundiContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("FoxsoundiDb")));
+            //services.AddCors(options =>
+            //        options.AddPolicy("AllowOrigin", builder => builder.AllowAnyOrigin())
+            //        );
+                
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy(MyAllowSpecificOrigins,
+            //        builder =>
+            //        {
+            //            builder.WithOrigins("http://example.com",
+            //                    "http://www.contoso.com")
+            //                .AllowAnyHeader()
+            //                .AllowAnyMethod();
+            //        });
+            //});
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,7 +68,7 @@ namespace Api
                 logger.LogInformation("Development Mode");
             }
             app.UseOwin(b => b.UseNancy(options => options.Bootstrapper = new MyBootstrapper(Configuration, logger)));
-
+            //.UseCors();
             app.Run(async (context) =>
             {
                 await context.Response.WriteAsync("Hello World!");
