@@ -12,7 +12,7 @@ namespace Api.Modules
     {
         public AlbumModule(AlbumConnection albumConnection) : base("v1/music/album")
         {
-            Get("", async _ => await albumConnection.GetAlbums());
+            Get("", async _ => await albumConnection.GetAlbums(new string[2]));
             Get("{albumId}", async parameters => await albumConnection.GetAlbum(parameters.albumId));
             Get("{albumId}/tracks", async parameters => await albumConnection.GetAlbumTracks(parameters.albumId));
         }
