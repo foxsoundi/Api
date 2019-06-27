@@ -22,7 +22,6 @@ namespace Api
             {
                 MySecrets secret = this.Bind<MySecrets>();
                 connection.AddAndUseSecret(secret);
-                //HomeModule.connection = connection;
                 return await connection.Connect();
             });
         }
