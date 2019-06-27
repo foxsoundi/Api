@@ -13,16 +13,19 @@ namespace Database
         public bool IsConnected { get; set; }
         public string SessionToken { get; set; }
         public List<Player> Friend { get; set; }
-
         public List<Track> FavouriteTracks { get; set; }
         public List<Playlist> FavouritePlaylists { get; set; }
+        public Preference Preferences { get; set; }
     }
 
-    public enum UsageLevel
+    public class Preference
     {
-        Api,
-        Admin,
-        User,
-        ContentCreator
+        public Theme Theme { get; set; }
+    }
+
+    public enum Theme
+    {
+        Dark,
+        Light
     }
 }

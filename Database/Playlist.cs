@@ -12,11 +12,4 @@ namespace Database
         public List<Track> Tracks { get; set; }
         public Player CreatedBy { get; set; }
     }
-
-    public class Image
-    {
-        public int Height { get; set; }
-        public string Url { get; set; }
-        public int Width { get; set; }
-    }
 }
