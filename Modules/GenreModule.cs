@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Api.Spotify;
 using Nancy;
 using Spotify.Connections;
 
@@ -14,10 +11,10 @@ namespace Api.Modules
             Get("{genreId}", async parameters => await genreConnection.GetGenres(parameters.genreId));
             Get("/", async parameters =>
             {
-                Response rep = await genreConnection.GetGenres();
+                GenreDto genresdto = await genreConnection.GetGenres();
+                Response rep = Response.AsJson(genresdto);
                 rep.ContentType = "application/json";
                 return rep;
-                //return await HomeModule.connection.GenreConnection.GetGenres();
             });
         }
     }

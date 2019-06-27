@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Api.Spotify;
+using Newtonsoft.Json;
 
 namespace Spotify.Connections
 {
@@ -13,11 +16,26 @@ namespace Spotify.Connections
             this.client = client;
         }
 
-        public async Task<string> GetGenres()
+        public async Task<GenreDto> GetGenres()
         {
             Uri GenresUrl = new Uri($"https://api.spotify.com/v1/browse/categories");
             HttpResponseMessage response = await client.GetAsync(GenresUrl);
-            return await response.Content.ReadAsStringAsync();
+            GenreDto result = JsonConvert.DeserializeObject<GenreDto>(await response.Content.ReadAsStringAsync());
+            result.categories.items = result.categories.items.Select(item =>
+            {
+                item.icons = item.icons.Select(icon =>
+                {
+                    if (!icon.height.HasValue || !icon.width.HasValue)
+                    {
+                        icon.height = 274;
+                        icon.width = 274;
+                    }
+
+                    return icon;
+                }).ToList();
+                return item;
+            }).ToList();
+            return result;
         }
 
         public async Task<string> GetGenres(string genreId)
