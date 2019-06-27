@@ -27,8 +27,7 @@ namespace Spotify.Connections
         {
             this.spotifySecret = spotifySecrets;
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
-                Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{spotifySecret.SpotifyId}:{spotifySecret.SpotifySecret}")));
+            client.DefaultRequestHeaders.Authorization = spotifySecrets.GetBasicAuthenticationHeaderValue();
         }
 
         public async Task<HttpStatusCode> Connect()
@@ -53,8 +52,7 @@ namespace Spotify.Connections
                 AccessDto accessDto = JsonConvert.DeserializeObject<AccessDto>(content);
                 access = new Access(accessDto, async () =>
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
-                        Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{spotifySecret.SpotifyId}:{spotifySecret.SpotifySecret}")));
+                    client.DefaultRequestHeaders.Authorization = spotifySecret.GetBasicAuthenticationHeaderValue();
                     await Connect();
                 });
                 client.DefaultRequestHeaders.Authorization = access.GetAuthentication();

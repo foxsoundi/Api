@@ -14,7 +14,7 @@ namespace Api
     public class MyBootstrapper : DefaultNancyBootstrapper
     {
         private readonly IConfiguration Configuration;
-        private readonly MySecrets Secrets;
+        private readonly SpotifySecrets spotifySecrets;
         private readonly ILogger logger;
         public MyBootstrapper(IConfiguration configuration, ILogger logger)
         {
@@ -30,16 +30,16 @@ namespace Api
                 tinyIoCContainer.Register<SpotifyConnection>()
                     .UsingConstructor(() => new SpotifyConnection(tinyIoCContainer.Resolve<HttpClient>()))
                     .AsSingleton();
-                tinyIoCContainer.Register<TrackConnection>()
-                    .UsingConstructor(() => new TrackConnection(tinyIoCContainer.Resolve<HttpClient>())).AsSingleton();
-                tinyIoCContainer.Register<GenreConnection>()
-                    .UsingConstructor(() => new GenreConnection(tinyIoCContainer.Resolve<HttpClient>())).AsSingleton();
-                tinyIoCContainer.Register<PlaylistConnection>()
-                    .UsingConstructor(() => new PlaylistConnection(tinyIoCContainer.Resolve<HttpClient>())).AsSingleton();
-                tinyIoCContainer.Register<ArtistConnection>()
-                    .UsingConstructor(() => new ArtistConnection(tinyIoCContainer.Resolve<HttpClient>())).AsSingleton();
-                tinyIoCContainer.Register<AlbumConnection>()
-                    .UsingConstructor(() => new AlbumConnection(tinyIoCContainer.Resolve<HttpClient>())).AsSingleton();
+                tinyIoCContainer.Register<SpotifyTrackConnection>()
+                    .UsingConstructor(() => new SpotifyTrackConnection(tinyIoCContainer.Resolve<HttpClient>())).AsSingleton();
+                tinyIoCContainer.Register<SpotifyGenreConnection>()
+                    .UsingConstructor(() => new SpotifyGenreConnection(tinyIoCContainer.Resolve<HttpClient>())).AsSingleton();
+                tinyIoCContainer.Register<SpotifyPlaylistConnection>()
+                    .UsingConstructor(() => new SpotifyPlaylistConnection(tinyIoCContainer.Resolve<HttpClient>())).AsSingleton();
+                tinyIoCContainer.Register<SpotifyArtistConnection>()
+                    .UsingConstructor(() => new SpotifyArtistConnection(tinyIoCContainer.Resolve<HttpClient>())).AsSingleton();
+                tinyIoCContainer.Register<SpotifyAlbumConnection>()
+                    .UsingConstructor(() => new SpotifyAlbumConnection(tinyIoCContainer.Resolve<HttpClient>())).AsSingleton();
                 tinyIoCContainer.Register<FoxsoundiContext>();
             }
 
@@ -64,7 +64,7 @@ namespace Api
         public override void Configure(INancyEnvironment environment)
         {
             base.Configure(environment);
-            environment.AddValue(Secrets);
+            environment.AddValue(spotifySecrets);
         }
     }
 

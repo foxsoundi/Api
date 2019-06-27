@@ -12,9 +12,9 @@ namespace Api
 {
     public class MusicModule : NancyModule
     {
-        public MusicModule(TrackConnection trackConnection) : base("v1/music")
+        public MusicModule(SpotifyTrackConnection spotifyTrackConnection) : base("v1/music")
         {
-             Get("audio-feature", async _ => await trackConnection.GetAudioFeature());
+             Get("audio-feature", async _ => await spotifyTrackConnection.GetAudioFeature());
         }
     }
 }

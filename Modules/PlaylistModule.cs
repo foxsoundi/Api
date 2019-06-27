@@ -10,9 +10,9 @@ namespace Api.Modules
 {
     public class PlaylistModule : NancyModule
     {
-        public PlaylistModule(PlaylistConnection playlistConnection) : base("v1/music/playlist")
+        public PlaylistModule(SpotifyPlaylistConnection spotifyPlaylistConnection) : base("v1/music/playlist")
         {
-            Get("{playListId}", async parameter => await playlistConnection.GetPlaylist(parameter.playListId));
+            Get("{playListId}", async parameter => await spotifyPlaylistConnection.GetPlaylist(parameter.playListId));
         }
     }
 }

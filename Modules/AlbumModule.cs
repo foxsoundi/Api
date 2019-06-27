@@ -10,11 +10,11 @@ namespace Api.Modules
 {
     public class AlbumModule : NancyModule
     {
-        public AlbumModule(AlbumConnection albumConnection) : base("v1/music/album")
+        public AlbumModule(SpotifyAlbumConnection spotifyAlbumConnection) : base("v1/music/album")
         {
-            Get("", async _ => await albumConnection.GetAlbums(new string[2]));
-            Get("{albumId}", async parameters => await albumConnection.GetAlbum(parameters.albumId));
-            Get("{albumId}/tracks", async parameters => await albumConnection.GetAlbumTracks(parameters.albumId));
+            Get("", async _ => await spotifyAlbumConnection.GetAlbums(new string[2]));
+            Get("{albumId}", async parameters => await spotifyAlbumConnection.GetAlbum(parameters.albumId));
+            Get("{albumId}/tracks", async parameters => await spotifyAlbumConnection.GetAlbumTracks(parameters.albumId));
         }
     }
 }
