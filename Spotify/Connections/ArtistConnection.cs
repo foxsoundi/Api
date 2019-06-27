@@ -6,9 +6,9 @@ namespace Spotify.Connections
 {
     public class ArtistConnection
     {
-        private HttpClient client;
+        private readonly HttpClient client;
 
-        public ArtistConnection(ref HttpClient client)
+        public ArtistConnection(HttpClient client)
         {
             this.client = client;
         }

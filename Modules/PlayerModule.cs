@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Nancy;
+using Spotify.Connections;
 
 namespace Api.Modules
 {
     public class PlayerModule : NancyModule
     {
-        public PlayerModule() : base("v1/player")
+        public PlayerModule(SpotifyConnection spotifyConnection) : base("v1/player")
         {
-            Get("token", _ => HomeModule.connection.GetCurrentToken());
+            Get("token", _ => spotifyConnection.GetCurrentToken());
         }
     }
 }

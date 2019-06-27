@@ -35,6 +35,12 @@ namespace Api
             container.Register<SpotifyConnection>()
                         .UsingConstructor(() => new SpotifyConnection(container.Resolve<HttpClient>()))
                         .AsSingleton();
+            container.Register<TrackConnection>().UsingConstructor(() => new TrackConnection(container.Resolve<HttpClient>())).AsSingleton();
+            container.Register<GenreConnection>().UsingConstructor(() => new GenreConnection(container.Resolve<HttpClient>())).AsSingleton();
+            container.Register<PlaylistConnection>().UsingConstructor(() => new PlaylistConnection(container.Resolve<HttpClient>())).AsSingleton();
+            container.Register<ArtistConnection>().UsingConstructor(() => new ArtistConnection(container.Resolve<HttpClient>())).AsSingleton();
+            container.Register<AlbumConnection>().UsingConstructor(() => new AlbumConnection(container.Resolve<HttpClient>())).AsSingleton();
+            container.Register<FoxsoundiContext>();
 
             //CORS Enable
             pipelines.AfterRequest.AddItemToEndOfPipeline((ctx) =>

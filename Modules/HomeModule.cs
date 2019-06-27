@@ -13,7 +13,7 @@ namespace Api
 {
     public class HomeModule : NancyModule
     {
-        public static SpotifyConnection connection;
+        //public static SpotifyConnection connection;
         public HomeModule(INancyEnvironment environnement, SpotifyConnection connection)
         {
             Get("/", _ => "Hello World!");
@@ -22,7 +22,7 @@ namespace Api
             {
                 MySecrets secret = this.Bind<MySecrets>();
                 connection.AddAndUseSecret(secret);
-                HomeModule.connection = connection;
+                //HomeModule.connection = connection;
                 return await connection.Connect();
             });
         }

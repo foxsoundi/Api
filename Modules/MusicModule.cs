@@ -6,14 +6,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Spotify.Connections;
 
 namespace Api
 {
     public class MusicModule : NancyModule
     {
-        public MusicModule(INancyEnvironment environnement) : base("v1/music")
+        public MusicModule(TrackConnection trackConnection) : base("v1/music")
         {
-             Get("audio-feature", async _ => await HomeModule.connection.TrackConnection.GetAudioFeature());
+             Get("audio-feature", async _ => await trackConnection.GetAudioFeature());
         }
     }
 }

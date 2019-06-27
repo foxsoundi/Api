@@ -8,7 +8,7 @@ namespace Spotify.Connections
     {
         private readonly HttpClient client;
 
-        public GenreConnection(ref HttpClient client)
+        public GenreConnection(HttpClient client)
         {
             this.client = client;
         }

@@ -21,11 +21,6 @@ namespace Spotify.Connections
             // var scopes = "user-read-private user-read-email";
            
             this.client = client;
-            AlbumConnection = new AlbumConnection(ref this.client);
-            ArtistConnection = new ArtistConnection(ref this.client);
-            PlaylistConnection = new PlaylistConnection(ref this.client);
-            GenreConnection = new GenreConnection(ref this.client);
-            TrackConnection = new TrackConnection(ref this.client);
         }
 
         public void AddAndUseSecret(MySecrets secrets)
@@ -37,10 +32,6 @@ namespace Spotify.Connections
         }
 
         public AlbumConnection AlbumConnection { get; }
-        public ArtistConnection ArtistConnection { get; }
-        public PlaylistConnection PlaylistConnection { get; }
-        public GenreConnection GenreConnection { get; }
-        public TrackConnection TrackConnection { get; }
 
         public async Task<HttpStatusCode> Connect()
         {

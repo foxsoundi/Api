@@ -4,14 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Nancy;
 using Nancy.Configuration;
+using Spotify.Connections;
 
 namespace Api.Modules
 {
     public class PlaylistModule : NancyModule
     {
-        public PlaylistModule(INancyEnvironment environment) : base("v1/music/playlist")
+        public PlaylistModule(PlaylistConnection playlistConnection) : base("v1/music/playlist")
         {
-            Get("{playListId}", async parameter => await HomeModule.connection.PlaylistConnection.GetPlaylist(parameter.playListId));
+            Get("{playListId}", async parameter => await playlistConnection.GetPlaylist(parameter.playListId));
         }
     }
 }
