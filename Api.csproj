@@ -11,12 +11,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Database\**" />
     <Compile Remove="SpotifyTest\**" />
     <Compile Remove="Spotify\**" />
+    <Content Remove="Database\**" />
     <Content Remove="SpotifyTest\**" />
     <Content Remove="Spotify\**" />
+    <EmbeddedResource Remove="Database\**" />
     <EmbeddedResource Remove="SpotifyTest\**" />
     <EmbeddedResource Remove="Spotify\**" />
+    <None Remove="Database\**" />
     <None Remove="SpotifyTest\**" />
     <None Remove="Spotify\**" />
   </ItemGroup>
