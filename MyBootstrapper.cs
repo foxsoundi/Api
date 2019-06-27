@@ -1,10 +1,13 @@
-﻿using Api;
+﻿using System.Net.Http;
+using Api;
+using Database;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Nancy;
 using Nancy.Bootstrapper;
 using Nancy.Configuration;
 using Nancy.TinyIoc;
+using Spotify.Connections;
 
 namespace Api
 {
@@ -27,6 +30,12 @@ namespace Api
 
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
+            //container.Register<FoxsoundiContext>().AsSingleton();
+            container.Register<HttpClient>().AsSingleton();
+            container.Register<SpotifyConnection>()
+                        .UsingConstructor(() => new SpotifyConnection(container.Resolve<HttpClient>()))
+                        .AsSingleton();
+
             //CORS Enable
             pipelines.AfterRequest.AddItemToEndOfPipeline((ctx) =>
             {

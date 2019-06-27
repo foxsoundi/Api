@@ -14,21 +14,26 @@ namespace Spotify.Connections
     {
         private readonly HttpClient client;
         private Access access;
-        private readonly MySecrets secret;
+        private MySecrets secret;
 
-        public SpotifyConnection(MySecrets secret, HttpClient client)
+        public SpotifyConnection(HttpClient client)
         {
-            this.secret = secret;
             // var scopes = "user-read-private user-read-email";
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", 
-                    Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{secret.Id}:{secret.Secret}")));
+           
             this.client = client;
             AlbumConnection = new AlbumConnection(ref this.client);
             ArtistConnection = new ArtistConnection(ref this.client);
             PlaylistConnection = new PlaylistConnection(ref this.client);
             GenreConnection = new GenreConnection(ref this.client);
             TrackConnection = new TrackConnection(ref this.client);
+        }
+
+        public void AddAndUseSecret(MySecrets secrets)
+        {
+            this.secret = secrets;
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
+                Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{secret.Id}:{secret.Secret}")));
         }
 
         public AlbumConnection AlbumConnection { get; }

@@ -14,15 +14,15 @@ namespace Api
     public class HomeModule : NancyModule
     {
         public static SpotifyConnection connection;
-        public HomeModule(INancyEnvironment environnement)
+        public HomeModule(INancyEnvironment environnement, SpotifyConnection connection)
         {
             Get("/", _ => "Hello World!");
             Get("/ping", async _ => await connection.Ping());
             Post("/connect", async _ =>
             {
                 MySecrets secret = this.Bind<MySecrets>();
-                // var secrets = environnement.GetValue<MySecrets>();
-                connection = new SpotifyConnection(secret, new HttpClient());
+                connection.AddAndUseSecret(secret);
+                HomeModule.connection = connection;
                 return await connection.Connect();
             });
         }
