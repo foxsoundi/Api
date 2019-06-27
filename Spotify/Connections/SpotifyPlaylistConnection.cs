@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 
 namespace Spotify.Connections
 {
-    public class PlaylistConnection
+    public class SpotifyPlaylistConnection
     {
         private readonly HttpClient client;
 
-        public PlaylistConnection(HttpClient client)
+        public SpotifyPlaylistConnection(HttpClient client)
         {
             this.client = client;
         }

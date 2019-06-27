@@ -20,8 +20,8 @@ namespace Api
             Get("/ping", async _ => await connection.Ping());
             Post("/connect", async _ =>
             {
-                MySecrets secret = this.Bind<MySecrets>();
-                connection.AddAndUseSecret(secret);
+                SpotifySecrets spotifySecret = this.Bind<SpotifySecrets>();
+                connection.AddAndUseSecret(spotifySecret);
                 return await connection.Connect();
             });
         }

@@ -7,11 +7,11 @@ using Newtonsoft.Json;
 
 namespace Spotify.Connections
 {
-    public class GenreConnection
+    public class SpotifyGenreConnection
     {
         private readonly HttpClient client;
 
-        public GenreConnection(HttpClient client)
+        public SpotifyGenreConnection(HttpClient client)
         {
             this.client = client;
         }

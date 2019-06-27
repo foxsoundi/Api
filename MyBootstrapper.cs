@@ -20,27 +20,31 @@ namespace Api
         {
             Configuration = configuration;
             this.logger = logger;
-            Secrets = new MySecrets(configuration);
-            if (string.IsNullOrEmpty(Secrets.Id))
-                logger.LogError("Secret Id is missing");
-
-            if (string.IsNullOrEmpty(Secrets.Secret))
-                logger.LogError("Secret secret is missing");
         }
 
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
+            void SpotifyStartup(TinyIoCContainer tinyIoCContainer)
+            {
+                tinyIoCContainer.Register<HttpClient>().AsSingleton();
+                tinyIoCContainer.Register<SpotifyConnection>()
+                    .UsingConstructor(() => new SpotifyConnection(tinyIoCContainer.Resolve<HttpClient>()))
+                    .AsSingleton();
+                tinyIoCContainer.Register<TrackConnection>()
+                    .UsingConstructor(() => new TrackConnection(tinyIoCContainer.Resolve<HttpClient>())).AsSingleton();
+                tinyIoCContainer.Register<GenreConnection>()
+                    .UsingConstructor(() => new GenreConnection(tinyIoCContainer.Resolve<HttpClient>())).AsSingleton();
+                tinyIoCContainer.Register<PlaylistConnection>()
+                    .UsingConstructor(() => new PlaylistConnection(tinyIoCContainer.Resolve<HttpClient>())).AsSingleton();
+                tinyIoCContainer.Register<ArtistConnection>()
+                    .UsingConstructor(() => new ArtistConnection(tinyIoCContainer.Resolve<HttpClient>())).AsSingleton();
+                tinyIoCContainer.Register<AlbumConnection>()
+                    .UsingConstructor(() => new AlbumConnection(tinyIoCContainer.Resolve<HttpClient>())).AsSingleton();
+                tinyIoCContainer.Register<FoxsoundiContext>();
+            }
+
             //container.Register<FoxsoundiContext>().AsSingleton();
-            container.Register<HttpClient>().AsSingleton();
-            container.Register<SpotifyConnection>()
-                        .UsingConstructor(() => new SpotifyConnection(container.Resolve<HttpClient>()))
-                        .AsSingleton();
-            container.Register<TrackConnection>().UsingConstructor(() => new TrackConnection(container.Resolve<HttpClient>())).AsSingleton();
-            container.Register<GenreConnection>().UsingConstructor(() => new GenreConnection(container.Resolve<HttpClient>())).AsSingleton();
-            container.Register<PlaylistConnection>().UsingConstructor(() => new PlaylistConnection(container.Resolve<HttpClient>())).AsSingleton();
-            container.Register<ArtistConnection>().UsingConstructor(() => new ArtistConnection(container.Resolve<HttpClient>())).AsSingleton();
-            container.Register<AlbumConnection>().UsingConstructor(() => new AlbumConnection(container.Resolve<HttpClient>())).AsSingleton();
-            container.Register<FoxsoundiContext>();
+            SpotifyStartup(container);
 
             //CORS Enable
             pipelines.AfterRequest.AddItemToEndOfPipeline((ctx) =>
