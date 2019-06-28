@@ -1,4 +1,4 @@
-﻿namespace Spotify
+﻿namespace Shared
 {
     public class LoginDto
     {

@@ -7,6 +7,7 @@ using Nancy;
 using Nancy.Bootstrapper;
 using Nancy.Configuration;
 using Nancy.TinyIoc;
+using Spotify;
 using Spotify.Connections;
 
 namespace Api
@@ -46,6 +47,7 @@ namespace Api
             //container.Register<FoxsoundiContext>().AsSingleton();
             SpotifyStartup(container);
 
+            container.Register<Store>().AsSingleton();
             //CORS Enable
             pipelines.AfterRequest.AddItemToEndOfPipeline((ctx) =>
             {
@@ -67,6 +69,5 @@ namespace Api
             environment.AddValue(spotifySecrets);
         }
     }
-
 }
 

@@ -79,9 +79,9 @@ namespace Spotify.Connections
             return access.Token;
         }
 
-        public bool Login(LoginDto loginDto)
+        public Profil Login(Store store, LoginDto loginDto)
         {
-            return true;
+            return store.LogNewUser(loginDto);
         }
     }
 }
