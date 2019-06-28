@@ -2,8 +2,9 @@
 {
     public class Track
     {
-        public string sourceId { get; set; }
-        public StreamingSource source { get; set; }
-        public int numberOfView { get; set; }
+        public string SourceId { get; set; }
+        public StreamingSource Source { get; set; }
+        public int Views { get; set; }
+        public int Likes { get; set; }
     }
 }
