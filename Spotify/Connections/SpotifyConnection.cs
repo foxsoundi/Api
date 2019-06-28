@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Api;
 using Api.Spotify;
 using Newtonsoft.Json;
+using Shared;
 
 namespace Spotify.Connections
 {
@@ -14,7 +15,7 @@ namespace Spotify.Connections
     {
         private readonly HttpClient client;
         private Access access;
-        private SpotifySecrets spotifySecret;
+        private ISecret spotifySecret;
 
         public SpotifyConnection(HttpClient client)
         {
@@ -23,7 +24,7 @@ namespace Spotify.Connections
             this.client = client;
         }
 
-        public void AddAndUseSecret(SpotifySecrets spotifySecrets)
+        public void AddAndUseSecret(ISecret spotifySecrets)
         {
             this.spotifySecret = spotifySecrets;
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
