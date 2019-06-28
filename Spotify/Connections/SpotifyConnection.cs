@@ -20,7 +20,6 @@ namespace Spotify.Connections
         public SpotifyConnection(HttpClient client)
         {
             // var scopes = "user-read-private user-read-email";
-           
             this.client = client;
         }
 
@@ -33,45 +32,46 @@ namespace Spotify.Connections
 
         public async Task<HttpStatusCode> Connect()
         {
-            Dictionary<string, string> payload = new Dictionary<string, string>
+            async Task<HttpResponseMessage> GetOauthToken()
             {
-                { "grant_type", "client_credentials"}
-            };
-
-            Uri url = new Uri("https://accounts.spotify.com/api/token/");
-            HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Post, url)
-            {
-                Content = new FormUrlEncodedContent(payload)
-            };
-            try
-            {
-                HttpResponseMessage res = await client.SendAsync(req);
-                if (!res.IsSuccessStatusCode)
-                    return res.StatusCode;
-
-                string content = await res.Content.ReadAsStringAsync();
-                AccessDto accessDto = JsonConvert.DeserializeObject<AccessDto>(content);
-                access = new Access(accessDto, async () =>
+                Dictionary<string, string> payload = new Dictionary<string, string>
                 {
-                    client.DefaultRequestHeaders.Authorization = spotifySecret.GetBasicAuthenticationHeaderValue();
-                    await Connect();
-                });
-                client.DefaultRequestHeaders.Authorization = access.GetAuthentication();
+                    {"grant_type", "client_credentials"}
+                };
+
+                Uri url = new Uri("https://accounts.spotify.com/api/token/");
+                HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Post, url)
+                {
+                    Content = new FormUrlEncodedContent(payload)
+                };
+                try
+                {
+                    HttpResponseMessage res = await client.SendAsync(req);
+                    return res;
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
             }
-            catch (Exception e)
+
+            HttpResponseMessage oauthResponse = await GetOauthToken();
+            string content = await oauthResponse.Content.ReadAsStringAsync();
+            AccessDto accessDto = JsonConvert.DeserializeObject<AccessDto>(content);
+            access = new Access(accessDto, async () =>
             {
-                throw e;
-            }
+                client.DefaultRequestHeaders.Authorization = spotifySecret.GetBasicAuthenticationHeaderValue();
+                await Connect();
+                access.IsConnected = true;
+            });
+            client.DefaultRequestHeaders.Authorization = access.GetAuthentication();
+
             return HttpStatusCode.OK;
         }
 
-        public async Task<HttpStatusCode> Ping()
+        public async Task<bool> Ping()
         {
-            string spotIdTest = "6ZEYvUSgON3J5Qe1RYi3Jo";
-            Uri trackUrl = new Uri($"https://api.spotify.com/v1/tracks/{spotIdTest}");
-            HttpResponseMessage response = await client.GetAsync(trackUrl);
-
-            return response.StatusCode;
+            return access.IsConnected;
         }
 
         public string GetCurrentToken()

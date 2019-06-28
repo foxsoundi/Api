@@ -23,7 +23,7 @@ namespace Api
             NapsterConnection napsterConnection)
         {
             Get("/", _ => "Hello World!");
-            Get("/ping", _ => HttpStatusCode.Accepted);
+            Get("/ping", async _ => await spotifyConnection.Ping());
             Post("/connect", async _ =>
             {
                 SpotifySecrets spotifySecret = this.Bind<SpotifySecrets>();

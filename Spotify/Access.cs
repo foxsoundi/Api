@@ -18,6 +18,8 @@ namespace Api.Spotify
         private event EventHandler triggerReconnect;
         private readonly Action connect;
         private Thread reconnectThread;
+        public bool IsConnected { get; set; } = false;
+
         internal Access(AccessDto dto, Action connect)
         {
             this.ExpireIn = TimeSpan.FromSeconds(dto.ExpireInSeconds);
@@ -30,6 +32,7 @@ namespace Api.Spotify
             triggerReconnect += (o, e) =>
             {
                 reconnectThread.Join();
+                IsConnected = false;
                 reconnectThread = new Thread(async () => await ReconnectIn(ExpireIn));
                 reconnectThread.Start();
             };
@@ -44,6 +47,7 @@ namespace Api.Spotify
         private async Task ReconnectIn(TimeSpan timespan)
         {
             await Task.Delay(timespan - TimeSpan.FromSeconds(10));
+            //await Task.Delay(TimeSpan.);
             connect();
             triggerReconnect?.Invoke(this, null);
         }
