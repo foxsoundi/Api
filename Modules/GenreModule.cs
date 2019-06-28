@@ -9,6 +9,7 @@ namespace Api.Modules
         public GenreModule(SpotifyGenreConnection spotifyGenreConnection) : base("v1/music/genre")
         {
             Get("{genreId}", async parameters => await spotifyGenreConnection.GetGenres(parameters.genreId));
+            Get("{genreId}/playlists", async parameters => await spotifyGenreConnection.GetGenrePlaylist(parameters.genreId));
             Get("/", async parameters =>
             {
                 GenreDto genresdto = await spotifyGenreConnection.GetGenres();

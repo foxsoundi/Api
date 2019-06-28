@@ -44,5 +44,12 @@ namespace Spotify.Connections
             HttpResponseMessage response = await client.GetAsync(GenresUrl);
             return await response.Content.ReadAsStringAsync();
         }
+
+        public async Task<string> GetGenrePlaylist(string genreId)
+        {
+            Uri GenrePlaylistUrl = new Uri($"https://api.spotify.com/v1/browse/categories/{genreId}/playlists");
+            HttpResponseMessage response = await client.GetAsync(GenrePlaylistUrl);
+            return await response.Content.ReadAsStringAsync();
+        }
     }
 }
