@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Shared;
 
 namespace Spotify
@@ -12,6 +13,11 @@ namespace Spotify
             Profil user = new Profil(logDto);
             LoggedUser.Add(user);
             return user;
+        }
+
+        public Profil GetInfoOf(Guid sessionToken)
+        {
+            return LoggedUser.Find(p => p.SessionId == sessionToken);
         }
     }
 }

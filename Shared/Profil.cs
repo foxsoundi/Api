@@ -7,7 +7,7 @@ namespace Shared
     public class Profil
     {
         public Guid SessionId { get; }
-        private string email;
+        public string email { get; }
 
         public Profil(LoginDto loginDto)
         {

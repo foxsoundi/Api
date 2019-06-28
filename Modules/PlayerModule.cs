@@ -20,6 +20,11 @@ namespace Api.Modules
                 LoginDto loginDto = this.Bind<LoginDto>();
                 return Response.AsJson(spotifyConnection.Login(store, loginDto));
             });
+            Get("info/{token}", parameters =>
+            {
+                Guid sessionToken = Guid.Parse(parameters.token);
+                return store.GetInfoOf(sessionToken);
+            });
         }
     }
 }
