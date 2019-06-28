@@ -78,5 +78,10 @@ namespace Spotify.Connections
         {
             return access.Token;
         }
+
+        public bool Login(LoginDto loginDto)
+        {
+            return true;
+        }
     }
 }
