@@ -13,6 +13,7 @@ namespace Api.Modules
         public PlaylistModule(SpotifyPlaylistConnection spotifyPlaylistConnection) : base("v1/music/playlist")
         {
             Get("{playListId}", async parameter => await spotifyPlaylistConnection.GetPlaylist(parameter.playListId));
+            Get("{playListId}/tracks", async parameter => await spotifyPlaylistConnection.GetPlaylistTracks(parameter.playListId));
         }
     }
 }

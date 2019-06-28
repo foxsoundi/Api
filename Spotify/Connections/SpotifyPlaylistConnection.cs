@@ -20,5 +20,13 @@ namespace Spotify.Connections
             var res = await response.Content.ReadAsStringAsync();
             return res;
         }
+
+        public async Task<string> GetPlaylistTracks(string playListId)
+        {
+            Uri playlistUrl = new Uri($"https://api.spotify.com/v1/playlists/{playListId}/tracks");
+            HttpResponseMessage response = await client.GetAsync(playlistUrl);
+            var res = await response.Content.ReadAsStringAsync();
+            return res;
+        }
     }
 }
