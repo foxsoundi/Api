@@ -18,9 +18,9 @@ namespace Database
 
             var users = new Player[]
             {
-                //new Player{FirstName = "toto", ID = 1, IsAdmin = false, IsConnected = false, LastName = "The"},
-                //new Player{FirstName = "toto2", ID = 2, IsAdmin = false, IsConnected = false, LastName = "The"},
-                //new Player{FirstName = "toto3", ID = 3, IsAdmin = false, IsConnected = false, LastName = "The"}
+                new Player{Email = "yoyo@gmail.com", Password = "******", FirstName = "Yohan", LastName = "Fairfort", Preferences = new Preference{Theme = Theme.Dark}},
+                new Player{Email = "rahma@gmail.com", Password = "******", FirstName = "Rahma", LastName = "Bourahoui", Preferences = new Preference{Theme = Theme.Dark}},
+                new Player{Email = "loghan@gmail.com", Password = "******", FirstName = "Loghan", LastName = "Ramassami", Preferences = new Preference{Theme = Theme.Dark}}
             };
 
             context.SaveChanges();

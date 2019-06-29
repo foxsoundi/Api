@@ -11,9 +11,16 @@
             this.password = credentialDto.Password;
         }
 
-        public bool isTheSameThan(CredentialDto credentialDto)
+        public Credential(Database.Player playedEntity)
         {
-            return email == credentialDto.Email;
+            email = playedEntity.Email;
+            password = playedEntity.Password;
+        }
+
+        public bool CheckCredential(CredentialDto credentialDto)
+        {
+            return email == credentialDto.Email 
+                   && password == credentialDto.Password;
         }
 
         public CredentialDto GetDto()

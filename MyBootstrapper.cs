@@ -2,6 +2,7 @@
 using Api;
 using Database;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Nancy;
 using Nancy.Bootstrapper;
@@ -18,8 +19,11 @@ namespace Api
         private readonly IConfiguration Configuration;
         private readonly SpotifySecrets spotifySecrets;
         private readonly ILogger logger;
-        public MyBootstrapper(IConfiguration configuration, ILogger logger)
+        private IServiceCollection services;
+
+        public MyBootstrapper(IConfiguration configuration, ILogger logger, IServiceCollection services)
         {
+            this.services = services;
             Configuration = configuration;
             this.logger = logger;
         }
@@ -44,11 +48,12 @@ namespace Api
                     .UsingConstructor(() => new SpotifyAlbumConnection(tinyIoCContainer.Resolve<HttpClient>())).AsSingleton();
                 //tinyIoCContainer.Register<FoxsoundiContext>();
             }
-
-            container.Register<FoxsoundiContext>().AsSingleton();
+            //container.BuildUp(services);
             SpotifyStartup(container);
 
-            container.Register<Store>().AsSingleton();
+            container.Register<FoxsoundiContext>().AsSingleton();
+            Initializer.Initialize(container.Resolve<FoxsoundiContext>());
+            container.Register<Store>().UsingConstructor(() => new Store(container.Resolve<FoxsoundiContext>())).AsSingleton();
             container.Register<PlayerConnection>()
                 .UsingConstructor(() => new PlayerConnection(container.Resolve<Store>())).AsSingleton();
             //CORS Enable

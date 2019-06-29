@@ -16,7 +16,7 @@ namespace Napster
 
         public NapsterConnection(HttpClient client)
         {
-            // var scopes = "user-read-private user-read-email";
+            // var scopes = "user-read-private user-read-Email";
 
             this.client = client;
         }

@@ -5,18 +5,17 @@ namespace Shared.Player
     public class Profil : IToDto<LoginDto>
     {
         public Guid SessionId { get; }
-        public string email { get; }
-
-        public Profil(CredentialDto credentialDto)
+        public string Email { get; }
+        public string LastName { get; }
+        public string FirstName { get; }
+        public Profil(Database.Player player)
         {
-            this.email = credentialDto.Email;
+            this.Email = player.Email;
+            this.FirstName = player.FirstName;
+            this.LastName = player.LastName;
             this.SessionId = Guid.NewGuid();
         }
 
-
-        public LoginDto GetDto()
-        {
-            return new LoginDto {Profil = this};
-        }
+        public LoginDto GetDto() => new LoginDto {Profil = this};
     }
 }

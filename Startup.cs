@@ -17,8 +17,7 @@ namespace Api
     public class Startup
     {
         public IConfiguration Configuration { get; }
-        public string Secret { get; set; }
-        public string ClientId { get; set; }
+        private IServiceCollection services;
         private readonly ILogger logger;
         public Startup(IHostingEnvironment env, ILogger<Startup> logger)
         {
@@ -36,27 +35,12 @@ namespace Api
             }
             Configuration = builder.Build();
         }
-
+        
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<FoxsoundiContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("FoxsoundiDb")));
-            //services.AddCors(options =>
-            //        options.AddPolicy("AllowOrigin", builder => builder.AllowAnyOrigin())
-            //        );
-                
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy(MyAllowSpecificOrigins,
-            //        builder =>
-            //        {
-            //            builder.WithOrigins("http://example.com",
-            //                    "http://www.contoso.com")
-            //                .AllowAnyHeader()
-            //                .AllowAnyMethod();
-            //        });
-            //});
-
+            this.services = services;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,8 +51,7 @@ namespace Api
                 app.UseDeveloperExceptionPage();
                 logger.LogInformation("Development Mode");
             }
-            app.UseOwin(b => b.UseNancy(options => options.Bootstrapper = new MyBootstrapper(Configuration, logger)));
-            //.UseCors();
+            app.UseOwin(b => b.UseNancy(options => options.Bootstrapper = new MyBootstrapper(Configuration, logger, services)));
             app.Run(async (context) =>
             {
                 await context.Response.WriteAsync("Hello World!");
