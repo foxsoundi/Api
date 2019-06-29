@@ -1,4 +1,4 @@
-﻿namespace Shared
+﻿namespace Shared.Player
 {
     internal class Credential : IToDto<CredentialDto>
     {

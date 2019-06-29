@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Shared.Player;
 
 namespace Shared
 {
@@ -24,15 +25,9 @@ namespace Shared
             return LogIn.Success;
         }
 
-        public Profil GetProfilOf(Guid sessionToken)
-        {
-            return LoggedUsers.Find(p => p.SessionId == sessionToken);
-        }
+        public Profil GetProfilOf(Guid sessionToken) => LoggedUsers.Find(p => p.SessionId == sessionToken);
 
-        public Profil GetProfilOf(CredentialDto credentialDto)
-        {
-            return LoggedUsers.Find(p => p.email == credentialDto.Email);
-        }
+        public Profil GetProfilOf(CredentialDto credentialDto) => LoggedUsers.Find(p => p.email == credentialDto.Email);
 
         public SignUp SignUpUser(SignUpDto signUpDto)
         {

@@ -1,4 +1,4 @@
-﻿namespace Shared
+﻿namespace Shared.Player
 {
     public enum SignUp
     {
