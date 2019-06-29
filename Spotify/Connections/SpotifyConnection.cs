@@ -14,7 +14,7 @@ namespace Spotify.Connections
     public class SpotifyConnection
     {
         private readonly HttpClient client;
-        private Access access;
+        private Access access = new Access();
         private ISecret spotifySecret;
 
         public SpotifyConnection(HttpClient client)
@@ -69,19 +69,21 @@ namespace Spotify.Connections
             return HttpStatusCode.OK;
         }
 
-        public async Task<bool> Ping()
+        public bool Ping() => access.IsConnected;
+
+        public string GetCurrentToken() => access.Token;
+
+        public LoginDto Login(Store store, CredentialDto credentialDto)
         {
-            return access.IsConnected;
+            LogIn state = store.LogNewUser(credentialDto);
+            if (state == LogIn.Failed)
+                return new LoginDto{IsLoggedIn = LogIn.Failed, Profil = null};
+
+            LoginDto dto = store.GetProfilOf(credentialDto).GetDto();
+            dto.IsLoggedIn = state;
+            return dto;
         }
 
-        public string GetCurrentToken()
-        {
-            return access.Token;
-        }
-
-        public Profil Login(Store store, LoginDto loginDto)
-        {
-            return store.LogNewUser(loginDto);
-        }
+        public SignUp SignUp(Store store, SignUpDto signUpDto) => store.SignUpUser(signUpDto);
     }
 }

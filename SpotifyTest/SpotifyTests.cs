@@ -8,6 +8,7 @@ using Api;
 using Api.Spotify;
 using Moq;
 using NUnit.Framework;
+using Spotify;
 
 namespace Tests
 {

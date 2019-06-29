@@ -1,8 +1,12 @@
-﻿namespace Shared
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Shared
 {
     public class LoginDto
     {
-        public string Email { get; set; }
-        public string Password { get; set; }
+        public LogIn IsLoggedIn { get; set; }
+        public Profil Profil { get; set; }
     }
 }

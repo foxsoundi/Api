@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Net;
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Api.Spotify;
 
 [assembly: InternalsVisibleTo("SpotifyTest")]
-namespace Api.Spotify
+namespace Spotify
 {
     internal class Access
     {
@@ -19,6 +19,11 @@ namespace Api.Spotify
         private readonly Action connect;
         private Thread reconnectThread;
         public bool IsConnected { get; set; } = false;
+
+        internal Access()
+        {
+            IsConnected = false;
+        }
 
         internal Access(AccessDto dto, Action connect)
         {

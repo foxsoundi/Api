@@ -17,13 +17,13 @@ namespace Api.Modules
             Get("token", _ => spotifyConnection.GetCurrentToken());
             Post("login", parameters =>
             {
-                LoginDto loginDto = this.Bind<LoginDto>();
-                return Response.AsJson(spotifyConnection.Login(store, loginDto));
+                CredentialDto credentialDto = this.Bind<CredentialDto>();
+                return Response.AsJson(spotifyConnection.Login(store, credentialDto));
             });
             Get("info/{token}", parameters =>
             {
                 Guid sessionToken = Guid.Parse(parameters.token);
-                return store.GetInfoOf(sessionToken);
+                return store.GetProfilOf(sessionToken);
             });
         }
     }

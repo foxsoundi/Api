@@ -4,15 +4,21 @@ using System.Text;
 
 namespace Shared
 {
-    public class Profil
+    public class Profil : IToDto<LoginDto>
     {
         public Guid SessionId { get; }
         public string email { get; }
 
-        public Profil(LoginDto loginDto)
+        public Profil(CredentialDto credentialDto)
         {
-            this.email = loginDto.Email;
+            this.email = credentialDto.Email;
             this.SessionId = Guid.NewGuid();
+        }
+
+
+        public LoginDto GetDto()
+        {
+            return new LoginDto {Profil = this};
         }
     }
 }
