@@ -7,7 +7,12 @@ namespace Shared
     public class Store
     {
         private List<Profil> LoggedUsers { get; } = new List<Profil>();
-        private List<Credential> AllUsersCredential { get; } = new List<Credential>();
+        private List<Credential> AllUsersCredential { get; } = new List<Credential>
+        {
+            new Credential(new CredentialDto{Email = "yoyo@gmail.com", Password = "******"}),
+            new Credential(new CredentialDto{Email = "rahma@gmail.com", Password = "******"}),
+            new Credential(new CredentialDto{Email = "loghan@gmail.com", Password = "******"})
+        };
 
         public LogIn LogNewUser(CredentialDto logDto)
         {
