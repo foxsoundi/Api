@@ -51,7 +51,7 @@ namespace Api
                 app.UseDeveloperExceptionPage();
                 logger.LogInformation("Development Mode");
             }
-            app.UseOwin(b => b.UseNancy(options => options.Bootstrapper = new MyBootstrapper(Configuration, logger, services)));
+            app.UseOwin(b => b.UseNancy(options => options.Bootstrapper = new MyBootstrapper(Configuration, logger, app)));
             app.Run(async (context) =>
             {
                 await context.Response.WriteAsync("Hello World!");

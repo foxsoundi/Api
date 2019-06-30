@@ -1,9 +1,12 @@
 ﻿using System.Net.Http;
 using Api;
 using Database;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Nancy;
 using Nancy.Bootstrapper;
 using Nancy.Configuration;
@@ -19,17 +22,18 @@ namespace Api
         private readonly IConfiguration Configuration;
         private readonly SpotifySecrets spotifySecrets;
         private readonly ILogger logger;
-        private IServiceCollection services;
+        private IApplicationBuilder app;
 
-        public MyBootstrapper(IConfiguration configuration, ILogger logger, IServiceCollection services)
+        public MyBootstrapper(IConfiguration configuration, ILogger logger, IApplicationBuilder app)
         {
-            this.services = services;
+            this.app = app;
             Configuration = configuration;
             this.logger = logger;
         }
 
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
+            base.ApplicationStartup(container, pipelines);
             void SpotifyStartup(TinyIoCContainer tinyIoCContainer)
             {
                 tinyIoCContainer.Register<HttpClient>().AsSingleton();
@@ -51,8 +55,13 @@ namespace Api
             //container.BuildUp(services);
             SpotifyStartup(container);
 
-            container.Register<FoxsoundiContext>().AsSingleton();
+            DbContextOptionsBuilder<FoxsoundiContext> dbContextOptionBuilder = new DbContextOptionsBuilder<FoxsoundiContext>();
+            dbContextOptionBuilder.UseSqlServer(Configuration.GetConnectionString("FoxsoundiDb"));
+            DbContextOptions<FoxsoundiContext> dbOptions = dbContextOptionBuilder.Options;
+            container.Register<DbContextOptions<FoxsoundiContext>>(dbOptions);
+            container.Register<FoxsoundiContext>().UsingConstructor(() => new FoxsoundiContext(container.Resolve<DbContextOptions<FoxsoundiContext>>())).AsSingleton();
             Initializer.Initialize(container.Resolve<FoxsoundiContext>());
+
             container.Register<Store>().UsingConstructor(() => new Store(container.Resolve<FoxsoundiContext>())).AsSingleton();
             container.Register<PlayerConnection>()
                 .UsingConstructor(() => new PlayerConnection(container.Resolve<Store>())).AsSingleton();
