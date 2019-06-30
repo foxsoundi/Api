@@ -22,7 +22,7 @@ namespace Api.Modules
                 return Response.AsJson(playerConnection.Login(credentialDto));
             });
 
-            Post("signUp", parameters =>
+            Post("signup", parameters =>
             {
                 SignUpDto signUpDto = this.Bind<SignUpDto>();
                 return Response.AsJson(playerConnection.SignUp(signUpDto));
