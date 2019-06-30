@@ -1,11 +1,15 @@
-﻿using System.Net.Http;
+﻿using System.Linq;
+using System.Net.Http;
 using Api;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Database;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Nancy;
 using Nancy.Bootstrapper;
+using Nancy.Bootstrappers.Autofac;
 using Nancy.Configuration;
 using Nancy.TinyIoc;
 using Shared;
@@ -14,7 +18,7 @@ using Spotify.Connections;
 
 namespace Api
 {
-    public class MyBootstrapper : DefaultNancyBootstrapper
+    public class MyBootstrapper : AutofacNancyBootstrapper
     {
         private readonly IConfiguration Configuration;
         private readonly SpotifySecrets spotifySecrets;
@@ -28,34 +32,50 @@ namespace Api
             this.logger = logger;
         }
 
-        protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
+        protected override void ConfigureApplicationContainer(ILifetimeScope container)
         {
-            void SpotifyStartup(TinyIoCContainer tinyIoCContainer)
+            base.ConfigureApplicationContainer(container);
+            ContainerBuilder SpotifyStartup(ILifetimeScope autofacContainer)
             {
-                tinyIoCContainer.Register<HttpClient>().AsSingleton();
-                tinyIoCContainer.Register<SpotifyConnection>()
-                    .UsingConstructor(() => new SpotifyConnection(tinyIoCContainer.Resolve<HttpClient>()))
-                    .AsSingleton();
-                tinyIoCContainer.Register<SpotifyTrackConnection>()
-                    .UsingConstructor(() => new SpotifyTrackConnection(tinyIoCContainer.Resolve<HttpClient>())).AsSingleton();
-                tinyIoCContainer.Register<SpotifyGenreConnection>()
-                    .UsingConstructor(() => new SpotifyGenreConnection(tinyIoCContainer.Resolve<HttpClient>())).AsSingleton();
-                tinyIoCContainer.Register<SpotifyPlaylistConnection>()
-                    .UsingConstructor(() => new SpotifyPlaylistConnection(tinyIoCContainer.Resolve<HttpClient>())).AsSingleton();
-                tinyIoCContainer.Register<SpotifyArtistConnection>()
-                    .UsingConstructor(() => new SpotifyArtistConnection(tinyIoCContainer.Resolve<HttpClient>())).AsSingleton();
-                tinyIoCContainer.Register<SpotifyAlbumConnection>()
-                    .UsingConstructor(() => new SpotifyAlbumConnection(tinyIoCContainer.Resolve<HttpClient>())).AsSingleton();
-                //tinyIoCContainer.Register<FoxsoundiContext>();
-            }
-            //container.BuildUp(services);
-            SpotifyStartup(container);
+                ContainerBuilder builder = new ContainerBuilder();
 
-            container.Register<FoxsoundiContext>().AsSingleton();
+                builder.RegisterType<HttpClient>().SingleInstance();
+                //builder.RegisterType<HttpClient>().AsSingleton();
+                builder.RegisterType<SpotifyConnection>()
+                    .UsingConstructor(() => new SpotifyConnection(autofacContainer.Resolve<HttpClient>()))
+                    .SingleInstance();
+                builder.RegisterType<SpotifyTrackConnection>()
+                    .UsingConstructor(() => new SpotifyTrackConnection(autofacContainer.Resolve<HttpClient>())).SingleInstance();
+                builder.RegisterType<SpotifyGenreConnection>()
+                    .UsingConstructor(() => new SpotifyGenreConnection(autofacContainer.Resolve<HttpClient>())).SingleInstance();
+                builder.RegisterType<SpotifyPlaylistConnection>()
+                    .UsingConstructor(() => new SpotifyPlaylistConnection(autofacContainer.Resolve<HttpClient>())).SingleInstance();
+                builder.RegisterType<SpotifyArtistConnection>()
+                    .UsingConstructor(() => new SpotifyArtistConnection(autofacContainer.Resolve<HttpClient>())).SingleInstance();
+                builder.RegisterType<SpotifyAlbumConnection>()
+                    .UsingConstructor(() => new SpotifyAlbumConnection(autofacContainer.Resolve<HttpClient>())).SingleInstance();
+
+                return builder;
+                //builder.RegisterType<FoxsoundiContext>();
+            }
+
+            //container.BuildUp(services);
+            ContainerBuilder thisBuilder = SpotifyStartup(container);
+            container.Update(b =>
+            {
+                b.Populate(services);
+            });
+            thisBuilder.RegisterType<FoxsoundiContext>().SingleInstance();
             Initializer.Initialize(container.Resolve<FoxsoundiContext>());
-            container.Register<Store>().UsingConstructor(() => new Store(container.Resolve<FoxsoundiContext>())).AsSingleton();
-            container.Register<PlayerConnection>()
-                .UsingConstructor(() => new PlayerConnection(container.Resolve<Store>())).AsSingleton();
+            thisBuilder.RegisterType<Store>().UsingConstructor(() => new Store(container.Resolve<FoxsoundiContext>())).SingleInstance();
+            thisBuilder.RegisterType<PlayerConnection>()
+                .UsingConstructor(() => new PlayerConnection(container.Resolve<Store>())).SingleInstance();
+        }
+    
+
+        protected override void ApplicationStartup(ILifetimeScope container, IPipelines pipelines)
+        {
+         
             //CORS Enable
             pipelines.AfterRequest.AddItemToEndOfPipeline((ctx) =>
             {
