@@ -24,15 +24,17 @@ namespace Shared
             if(currentPlayer.FavouritePlaylists == null)
                 currentPlayer.FavouritePlaylists = new List<PlayerFavouritePlaylist>();
 
-            currentPlayer.PersonnalPlaylists.Add(new Database.Playlist
+            Playlist newPlaylist = new Database.Playlist
             {
                 CreatedBy = currentPlayer,
                 Description = dto.description,
                 Name = dto.name
-            });
-            dto.owner = new Owner {display_name = $"{currentPlayer.LastName + currentPlayer.FirstName}"};
+            };
+            currentPlayer.PersonnalPlaylists.Add(newPlaylist);
             dbContext.Update(currentPlayer);
             await dbContext.SaveChangesAsync();
+            dto.owner = new Owner { display_name = $"{currentPlayer.LastName + currentPlayer.FirstName}" };
+            dto.id = newPlaylist.Id.ToString();
             playerStore.Refresh(currentPlayer);
             return dto;
         }
