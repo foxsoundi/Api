@@ -38,8 +38,9 @@ namespace Api
             void SpotifyStartup(TinyIoCContainer tinyIoCContainer)
             {
                 tinyIoCContainer.Register<HttpClient>().AsSingleton();
+                tinyIoCContainer.Register<Access>().AsSingleton();
                 tinyIoCContainer.Register<SpotifyConnection>()
-                    .UsingConstructor(() => new SpotifyConnection(tinyIoCContainer.Resolve<HttpClient>()))
+                    .UsingConstructor(() => new SpotifyConnection(tinyIoCContainer.Resolve<HttpClient>(), tinyIoCContainer.Resolve<Access>()))
                     .AsSingleton();
                 tinyIoCContainer.Register<SpotifyTrackConnection>()
                     .UsingConstructor(() => new SpotifyTrackConnection(tinyIoCContainer.Resolve<HttpClient>())).AsSingleton();

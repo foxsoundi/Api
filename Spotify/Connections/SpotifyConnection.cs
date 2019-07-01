@@ -16,12 +16,12 @@ namespace Spotify.Connections
         private readonly HttpClient client;
         private Access access = new Access();
         private ISecret spotifySecret;
-        private readonly PlayerConnection playerConnection;
 
-        public SpotifyConnection(HttpClient client)
+        public SpotifyConnection(HttpClient client, Access access)
         {
             // var scopes = "user-read-private user-read-Email";
             this.client = client;
+            this.access = access;
         }
 
         public void AddAndUseSecret(ISecret spotifySecrets)
@@ -59,12 +59,13 @@ namespace Spotify.Connections
             HttpResponseMessage oauthResponse = await GetOauthToken();
             string content = await oauthResponse.Content.ReadAsStringAsync();
             AccessDto accessDto = JsonConvert.DeserializeObject<AccessDto>(content);
-            access = new Access(accessDto, async () =>
-            {
-                client.DefaultRequestHeaders.Authorization = spotifySecret.GetBasicAuthenticationHeaderValue();
-                await Connect();
-                access.IsConnected = true;
-            });
+            access = new Access(accessDto);
+            //access = new Access(accessDto, async () =>
+            //{
+            //    client.DefaultRequestHeaders.Authorization = spotifySecret.GetBasicAuthenticationHeaderValue();
+            //    await Connect();
+            //    access.IsConnected = true;
+            //});
             client.DefaultRequestHeaders.Authorization = access.GetAuthentication();
 
             return HttpStatusCode.OK;

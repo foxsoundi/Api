@@ -8,8 +8,8 @@ namespace Shared
 {
     public class PlaylistStore
     {
-        private FoxsoundiContext dbContext;
-        private PlayerStore playerStore;
+        private readonly FoxsoundiContext dbContext;
+        private readonly PlayerStore playerStore;
 
         public PlaylistStore(FoxsoundiContext dbContext, PlayerStore playerStore)
         {
@@ -21,6 +21,8 @@ namespace Shared
             Database.Player currentPlayer = playerStore.GetLoggedPlayer(sessionId);
             if(currentPlayer.PersonnalPlaylists == null)
                 currentPlayer.PersonnalPlaylists = new List<Playlist>();
+            if(currentPlayer.FavouritePlaylists == null)
+                currentPlayer.FavouritePlaylists = new List<PlayerFavouritePlaylist>();
 
             currentPlayer.PersonnalPlaylists.Add(new Database.Playlist
             {
@@ -28,8 +30,10 @@ namespace Shared
                 Description = dto.description,
                 Name = dto.name
             });
+
             dbContext.Update(currentPlayer);
-            
+            await dbContext.SaveChangesAsync();
+            playerStore.Refresh(currentPlayer);
             return dto;
         }
     }

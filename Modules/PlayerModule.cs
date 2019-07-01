@@ -21,7 +21,6 @@ namespace Api.Modules
                 CredentialDto credentialDto = this.Bind<CredentialDto>();
                 return Response.AsJson(playerConnection.Login(credentialDto));
             });
-
             Post("signup", parameters =>
             {
                 SignUpDto signUpDto = this.Bind<SignUpDto>();

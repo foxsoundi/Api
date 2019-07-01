@@ -35,7 +35,7 @@ namespace Shared
 
         public SignUp SignUpUser(SignUpDto signUpDto)
         {
-            if(AllUsersCredential().Any(c => c.CheckCredential(signUpDto)))
+            if (AllUsersCredential().Any(c => c.CheckCredential(signUpDto)))
                 return SignUp.Exist;
 
             dbContext.Players.Add(new Database.Player
@@ -54,6 +54,12 @@ namespace Shared
         {
             Profil loggedProfil = LoggedUsers.Single(p => p.SessionId == sessionId);
             return loggedProfil.Find(dbContext.Players);
+        }
+
+        public void Refresh(Database.Player currentPlayer)
+        {
+            LoggedUsers.Remove(LoggedUsers.Find(x => x.Email == currentPlayer.Email));
+            LoggedUsers.Add(new Profil(currentPlayer));
         }
     }
 }

@@ -8,7 +8,7 @@ using Api.Spotify;
 [assembly: InternalsVisibleTo("SpotifyTest")]
 namespace Spotify
 {
-    internal class Access
+    public class Access
     {
         public TimeSpan ExpireIn { get; }
         public string Token { get; }
@@ -20,32 +20,32 @@ namespace Spotify
         private Thread reconnectThread;
         public bool IsConnected { get; set; } = false;
 
-        internal Access()
+        public Access()
         {
             IsConnected = false;
         }
 
-        internal Access(AccessDto dto, Action connect)
+        public Access(AccessDto dto)//, Action connect)
         {
             this.ExpireIn = TimeSpan.FromSeconds(dto.ExpireInSeconds);
             this.Token = dto.Token;
             this.Scope = dto.Scope;
             this.Type = dto.Type;
-            this.connect = connect;
+            //this.connect = connect;
 
-            reconnectThread = new Thread(async () => await ReconnectIn(ExpireIn));
-            triggerReconnect += (o, e) =>
-            {
-                reconnectThread.Join();
-                IsConnected = false;
-                reconnectThread = new Thread(async () => await ReconnectIn(ExpireIn));
-                reconnectThread.Start();
-            };
+            //reconnectThread = new Thread(async () => await ReconnectIn(ExpireIn));
+            //triggerReconnect += (o, e) =>
+            //{
+            //    reconnectThread.Join();
+            //    IsConnected = false;
+            //    reconnectThread = new Thread(async () => await ReconnectIn(ExpireIn));
+            //    reconnectThread.Start();
+            //};
         }
 
         public AuthenticationHeaderValue GetAuthentication()
         {
-            reconnectThread.Start();
+            //reconnectThread.Start();
             return new AuthenticationHeaderValue(Type, Token);
         }
 
