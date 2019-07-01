@@ -22,9 +22,9 @@ namespace Shared.Player
             this.FirstName = player.FirstName;
             this.LastName = player.LastName;
             this.PersonnalPlaylists = player.PersonnalPlaylists;
-            this.FavouritePlaylists = player.FavouritePlaylists
-                                            .Where(x => x.PlayerId == id)
-                                            .Select(fp => fp.FavouritePlaylist).ToList();
+            this.FavouritePlaylists = player.FavouritePlaylists?.Where(x => x.PlayerId == id)
+                                                                .Select(fp => fp.FavouritePlaylist)
+                                                                .ToList();
             this.SessionId = Guid.NewGuid();
         }
 

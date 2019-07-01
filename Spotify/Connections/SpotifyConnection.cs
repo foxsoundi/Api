@@ -19,7 +19,6 @@ namespace Spotify.Connections
 
         public SpotifyConnection(HttpClient client, Access access)
         {
-            // var scopes = "user-read-private user-read-Email";
             this.client = client;
             this.access = access;
         }

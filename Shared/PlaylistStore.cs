@@ -30,7 +30,7 @@ namespace Shared
                 Description = dto.description,
                 Name = dto.name
             });
-
+            dto.owner = new Owner {display_name = $"{currentPlayer.LastName + currentPlayer.FirstName}"};
             dbContext.Update(currentPlayer);
             await dbContext.SaveChangesAsync();
             playerStore.Refresh(currentPlayer);

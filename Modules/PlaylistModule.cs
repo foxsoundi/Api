@@ -24,10 +24,10 @@ namespace Api.Modules
             Get("{playListId}/tracks", async parameter => await spotifyPlaylistConnection.GetPlaylistTracks(parameter.playListId));
             Post("/hybrid", async parameter =>
             {
-                List<string> sessionId = Request.Headers["SessionId"].ToList();
+                string sessionId = Request.Headers["SessionId"].ToList()[0];
                 PlaylistDto dto = this.Bind<PlaylistDto>();
 
-                return Response.AsJson(await playlistStore.CreateNewPlaylist(dto, Guid.Parse(sessionId[0])));
+                return Response.AsJson(await playlistStore.CreateNewPlaylist(dto, Guid.Parse(sessionId)));
             });
         }
     }
