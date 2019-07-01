@@ -6,16 +6,16 @@ using Shared.Player;
 
 namespace Shared
 {
-    public class Store
+    public class PlayerStore
     {
         private readonly FoxsoundiContext dbContext;
         private List<Profil> LoggedUsers { get; } = new List<Profil>();
         private readonly Func<List<Credential>> AllUsersCredential;
 
-        public Store(FoxsoundiContext context)
+        public PlayerStore(FoxsoundiContext context)
         {
             this.dbContext = context;
-            AllUsersCredential = () => dbContext.players.Select(p => new Credential(p)).ToList();
+            AllUsersCredential = () => dbContext.Players.Select(p => new Credential(p)).ToList();
         }
 
         public LogIn LogNewUser(CredentialDto logDto)
@@ -23,7 +23,7 @@ namespace Shared
             if (!AllUsersCredential().Any(p => p.CheckCredential(logDto)))
                 return LogIn.Failed;
             //Credential hisCred = AllUsersCredential.Find(c => c.isTheSameThan(logDto));
-            Database.Player userDb = dbContext.players.FirstOrDefault(p => p.Email == logDto.Email);
+            Database.Player userDb = dbContext.Players.FirstOrDefault(p => p.Email == logDto.Email);
             Profil user = new Profil(userDb);
             LoggedUsers.Add(user);
             return LogIn.Success;
@@ -38,7 +38,7 @@ namespace Shared
             if(AllUsersCredential().Any(c => c.CheckCredential(signUpDto)))
                 return SignUp.Exist;
 
-            dbContext.players.Add(new Database.Player
+            dbContext.Players.Add(new Database.Player
             {
                 Email = signUpDto.Email,
                 Password = signUpDto.Password,
@@ -48,6 +48,12 @@ namespace Shared
 
             dbContext.SaveChanges();
             return SignUp.New;
+        }
+
+        public Database.Player GetLoggedPlayer(Guid sessionId)
+        {
+            Profil loggedProfil = LoggedUsers.Single(p => p.SessionId == sessionId);
+            return loggedProfil.Find(dbContext.Players);
         }
     }
 }

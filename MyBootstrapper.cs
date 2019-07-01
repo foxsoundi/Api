@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using Api;
+using Api.Modules;
 using Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -55,16 +56,23 @@ namespace Api
             //container.BuildUp(services);
             SpotifyStartup(container);
 
-            DbContextOptionsBuilder<FoxsoundiContext> dbContextOptionBuilder = new DbContextOptionsBuilder<FoxsoundiContext>();
-            dbContextOptionBuilder.UseSqlServer(Configuration.GetConnectionString("FoxsoundiDb"));
-            DbContextOptions<FoxsoundiContext> dbOptions = dbContextOptionBuilder.Options;
-            container.Register<DbContextOptions<FoxsoundiContext>>(dbOptions);
-            container.Register<FoxsoundiContext>().UsingConstructor(() => new FoxsoundiContext(container.Resolve<DbContextOptions<FoxsoundiContext>>())).AsSingleton();
-            Initializer.Initialize(container.Resolve<FoxsoundiContext>());
+            void DatabaseStartup()
+            {
+                DbContextOptionsBuilder<FoxsoundiContext> dbContextOptionBuilder = new DbContextOptionsBuilder<FoxsoundiContext>();
+                dbContextOptionBuilder.UseSqlServer(Configuration.GetConnectionString("FoxsoundiDb"));
+                DbContextOptions<FoxsoundiContext> dbOptions = dbContextOptionBuilder.Options;
+                container.Register<DbContextOptions<FoxsoundiContext>>(dbOptions);
+                container.Register<FoxsoundiContext>()
+                    .UsingConstructor(() => new FoxsoundiContext(container.Resolve<DbContextOptions<FoxsoundiContext>>()))
+                    .AsSingleton();
+                Initializer.Initialize(container.Resolve<FoxsoundiContext>());
+            }
+            DatabaseStartup();
 
-            container.Register<Store>().UsingConstructor(() => new Store(container.Resolve<FoxsoundiContext>())).AsSingleton();
+            container.Register<PlayerStore>().UsingConstructor(() => new PlayerStore(container.Resolve<FoxsoundiContext>())).AsSingleton();
+            container.Register<PlaylistStore>().UsingConstructor(() => new PlaylistStore(container.Resolve<FoxsoundiContext>(), container.Resolve<PlayerStore>())).AsSingleton();
             container.Register<PlayerConnection>()
-                .UsingConstructor(() => new PlayerConnection(container.Resolve<Store>())).AsSingleton();
+                .UsingConstructor(() => new PlayerConnection(container.Resolve<PlayerStore>())).AsSingleton();
             //CORS Enable
             pipelines.AfterRequest.AddItemToEndOfPipeline((ctx) =>
             {

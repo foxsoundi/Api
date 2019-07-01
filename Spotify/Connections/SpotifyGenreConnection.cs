@@ -16,11 +16,11 @@ namespace Spotify.Connections
             this.client = client;
         }
 
-        public async Task<GenreDto> GetGenres()
+        public async Task<GenresDto> GetGenres()
         {
             Uri GenresUrl = new Uri($"https://api.spotify.com/v1/browse/categories");
             HttpResponseMessage response = await client.GetAsync(GenresUrl);
-            GenreDto result = JsonConvert.DeserializeObject<GenreDto>(await response.Content.ReadAsStringAsync());
+            GenresDto result = JsonConvert.DeserializeObject<GenresDto>(await response.Content.ReadAsStringAsync());
             result.categories.items = result.categories.items.Select(item =>
             {
                 item.icons = item.icons.Select(icon =>

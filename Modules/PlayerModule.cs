@@ -13,7 +13,7 @@ namespace Api.Modules
 {
     public class PlayerModule : NancyModule
     {
-        public PlayerModule(SpotifyConnection spotifyConnection, Store store, PlayerConnection playerConnection) : base("v1/player")
+        public PlayerModule(SpotifyConnection spotifyConnection, PlayerStore playerStore, PlayerConnection playerConnection) : base("v1/player")
         {
             Get("token", _ => spotifyConnection.GetCurrentToken());
             Post("login", parameters =>
@@ -30,7 +30,7 @@ namespace Api.Modules
             Get("info/{token}", parameters =>
             {
                 Guid sessionToken = Guid.Parse(parameters.token);
-                return store.GetProfilOf(sessionToken);
+                return playerStore.GetProfilOf(sessionToken);
             });
         }
     }

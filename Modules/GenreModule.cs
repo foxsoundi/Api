@@ -12,7 +12,7 @@ namespace Api.Modules
             Get("{genreId}/playlists", async parameters => await spotifyGenreConnection.GetGenrePlaylist(parameters.genreId));
             Get("/", async parameters =>
             {
-                GenreDto genresdto = await spotifyGenreConnection.GetGenres();
+                GenresDto genresdto = await spotifyGenreConnection.GetGenres();
                 Response rep = Response.AsJson(genresdto);
                 rep.ContentType = "application/json";
                 return rep;

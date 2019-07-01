@@ -14,7 +14,8 @@ namespace Database
         public UsageLevel IsAdmin { get; set; }
         public List<Player> Friends { get; set; }
         public List<Track> FavouriteTracks { get; set; }
-        public List<Playlist> FavouritePlaylists { get; set; }
+        public List<PlayerFavouritePlaylist> FavouritePlaylists { get; set; }
+        public List<Playlist> PersonnalPlaylists { get; set; }
         public Preference Preferences { get; set; }
     }
 }

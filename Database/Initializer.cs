@@ -11,7 +11,7 @@ namespace Database
         {
             context.Database.EnsureCreated();
 
-            if (context.players.Any())
+            if (context.Players.Any())
             {
                 return;   // DB has been seeded
             }
@@ -22,7 +22,7 @@ namespace Database
                 new Player{Email = "rahma@gmail.com", Password = "******", FirstName = "Rahma", LastName = "Bourahoui", Preferences = new Preference{Theme = Theme.Dark}},
                 new Player{Email = "loghan@gmail.com", Password = "******", FirstName = "Loghan", LastName = "Ramassami", Preferences = new Preference{Theme = Theme.Dark}}
             };
-            context.players.AddRange(users);
+            context.Players.AddRange(users);
             context.SaveChanges();
         }
     }

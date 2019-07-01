@@ -12,7 +12,7 @@ namespace Api.Spotify
         public int? width { get; set; }
     }
 
-    public class Item
+    public class GenreDto
     {
         public string href { get; set; }
         public List<Icon> icons { get; set; }
@@ -23,7 +23,7 @@ namespace Api.Spotify
     public class Categories
     {
         public string href { get; set; }
-        public List<Item> items { get; set; }
+        public List<GenreDto> items { get; set; }
         public int limit { get; set; }
         public string next { get; set; }
         public int offset { get; set; }
@@ -31,7 +31,7 @@ namespace Api.Spotify
         public int total { get; set; }
     }
 
-    public class GenreDto
+    public class GenresDto
     {
         public Categories categories { get; set; }
     }

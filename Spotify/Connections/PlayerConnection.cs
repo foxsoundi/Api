@@ -5,24 +5,24 @@ namespace Spotify.Connections
 {
     public class PlayerConnection
     {
-        private readonly Store store;
+        private readonly PlayerStore playerStore;
 
-        public PlayerConnection(Store store)
+        public PlayerConnection(PlayerStore playerStore)
         {
-            this.store = store;
+            this.playerStore = playerStore;
         }
 
         public LoginDto Login(CredentialDto credentialDto)
         {
-            LogIn state = store.LogNewUser(credentialDto);
+            LogIn state = playerStore.LogNewUser(credentialDto);
             if (state == LogIn.Failed)
                 return new LoginDto{IsLoggedIn = LogIn.Failed, Profil = null};
 
-            LoginDto dto = store.GetProfilOf(credentialDto).GetDto();
+            LoginDto dto = playerStore.GetProfilOf(credentialDto).GetDto();
             dto.IsLoggedIn = state;
             return dto;
         }
 
-        public SignUp SignUp(SignUpDto signUpDto) => store.SignUpUser(signUpDto);
+        public SignUp SignUp(SignUpDto signUpDto) => playerStore.SignUpUser(signUpDto);
     }
 }
