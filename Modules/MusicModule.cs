@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Shared;
 using Spotify.Connections;
 using Youtube;
 
@@ -16,7 +17,13 @@ namespace Api
         public MusicModule(SpotifyTrackConnection spotifyTrackConnection, YoutubeConnection youtubeConnection) : base("v1/music")
         {
             Get("audio-feature", async _ => await spotifyTrackConnection.GetAudioFeature());
-            Get("youtube/{songTitle}", async parameters => await youtubeConnection.GetVideoIdOf(parameters.songTitle));
+            Get("youtube/{songTitle}", async parameters =>
+            {
+                return Response.AsJson(new YoutubeDto
+                {
+                    VideoId = await youtubeConnection.GetVideoIdOf(parameters.songTitle)
+                });
+            });
         }
     }
 }
