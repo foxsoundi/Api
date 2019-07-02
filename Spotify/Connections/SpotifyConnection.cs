@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading;
 using System.Threading.Tasks;
 using Api;
 using Api.Spotify;
@@ -18,31 +17,23 @@ namespace Spotify.Connections
         private Access access = new Access();
         private ISecret spotifySecret;
 
-        private event EventHandler<Access> triggerReconnect;
-        private Thread reconnectThread;
-
         public SpotifyConnection(HttpClient client, Access access)
         {
             this.client = client;
             this.access = access;
-            triggerReconnect += (s, eAccess) =>
-            {
-                Task.Delay(eAccess.ExpireIn - TimeSpan.FromSeconds(2));
-                ((SpotifyConnection)s).Connect();
-            };
         }
 
         public void AddAndUseSecret(ISecret spotifySecrets)
         {
             this.spotifySecret = spotifySecrets;
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Authorization = spotifySecrets.GetBasicAuthenticationHeaderValue();
         }
 
         public async Task<HttpStatusCode> Connect()
         {
             async Task<HttpResponseMessage> GetOauthToken()
             {
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.Authorization = spotifySecret.GetBasicAuthenticationHeaderValue();
                 Dictionary<string, string> payload = new Dictionary<string, string>
                 {
                     {"grant_type", "client_credentials"}
@@ -68,8 +59,14 @@ namespace Spotify.Connections
             string content = await oauthResponse.Content.ReadAsStringAsync();
             AccessDto accessDto = JsonConvert.DeserializeObject<AccessDto>(content);
             access = new Access(accessDto);
+            //access = new Access(accessDto, async () =>
+            //{
+            //    client.DefaultRequestHeaders.Authorization = spotifySecret.GetBasicAuthenticationHeaderValue();
+            //    await Connect();
+            //    access.IsConnected = true;
+            //});
             client.DefaultRequestHeaders.Authorization = access.GetAuthentication();
-            triggerReconnect?.Invoke(this, access);
+
             return HttpStatusCode.OK;
         }
 
