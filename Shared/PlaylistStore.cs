@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Database;
@@ -37,6 +38,19 @@ namespace Shared
             dto.id = newPlaylist.Id.ToString();
             playerStore.Refresh(currentPlayer);
             return dto;
+        }
+
+        public async Task<PlaylistsRootObject> GetAllPlaylist<TModel>(Guid sessionId)
+        {
+            Database.Player player = playerStore.GetLoggedPlayer(sessionId);
+            player.PersonnalPlaylists.Select(x => new PlaylistDto
+            {
+                id = x.Id.ToString(),
+                description = x.Description,
+                name = x.Name,
+                tracks = x.Tracks.Select(z => new Track())
+            });
+
         }
     }
 }

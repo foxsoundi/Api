@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database", "Database\Databa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Napster", "Napster\Napster.csproj", "{A2E1AFB8-D027-411B-A855-EB96DEDE2568}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{3B49FE17-9ABE-4987-AF99-B11E24A489C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{3B49FE17-9ABE-4987-AF99-B11E24A489C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Youtube", "Youtube\Youtube.csproj", "{52DCFF1B-AD65-4668-B765-0D48105EDAC8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{3B49FE17-9ABE-4987-AF99-B11E24A489C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B49FE17-9ABE-4987-AF99-B11E24A489C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B49FE17-9ABE-4987-AF99-B11E24A489C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52DCFF1B-AD65-4668-B765-0D48105EDAC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52DCFF1B-AD65-4668-B765-0D48105EDAC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52DCFF1B-AD65-4668-B765-0D48105EDAC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52DCFF1B-AD65-4668-B765-0D48105EDAC8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

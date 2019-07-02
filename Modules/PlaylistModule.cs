@@ -29,6 +29,12 @@ namespace Api.Modules
 
                 return Response.AsJson(await playlistStore.CreateNewPlaylist(dto, Guid.Parse(sessionId)));
             });
+            Get("/hybrid/all", async _ =>
+            {
+                string sessionId = Request.Headers["SessionId"].ToList()[0];
+                //PlaylistDto dto = this.Bind<PlaylistDto>();
+                return Response.AsJson(await playlistStore.GetAllPlaylist(Guid.Parse(sessionId)));
+            });
         }
     }
 }

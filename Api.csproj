@@ -16,21 +16,25 @@
     <Compile Remove="Shared\**" />
     <Compile Remove="SpotifyTest\**" />
     <Compile Remove="Spotify\**" />
+    <Compile Remove="Youtube\**" />
     <Content Remove="Database\**" />
     <Content Remove="Napster\**" />
     <Content Remove="Shared\**" />
     <Content Remove="SpotifyTest\**" />
     <Content Remove="Spotify\**" />
+    <Content Remove="Youtube\**" />
     <EmbeddedResource Remove="Database\**" />
     <EmbeddedResource Remove="Napster\**" />
     <EmbeddedResource Remove="Shared\**" />
     <EmbeddedResource Remove="SpotifyTest\**" />
     <EmbeddedResource Remove="Spotify\**" />
+    <EmbeddedResource Remove="Youtube\**" />
     <None Remove="Database\**" />
     <None Remove="Napster\**" />
     <None Remove="Shared\**" />
     <None Remove="SpotifyTest\**" />
     <None Remove="Spotify\**" />
+    <None Remove="Youtube\**" />
   </ItemGroup>
 
   <ItemGroup>

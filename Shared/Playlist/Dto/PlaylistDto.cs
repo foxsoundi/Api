@@ -21,20 +21,4 @@ namespace Shared
         public string type { get; set; }
         public string uri { get; set; }
     }
-
-    public class PlaylistsDto
-    {
-        public string href { get; set; }
-        public List<Item> items { get; set; }
-        public int limit { get; set; }
-        public object next { get; set; }
-        public int offset { get; set; }
-        public object previous { get; set; }
-        public int total { get; set; }
-    }
-
-    public class PlaylistsRootObject
-    {
-        public PlaylistsDto playlists { get; set; }
-    }
 }
