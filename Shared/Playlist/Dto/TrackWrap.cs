@@ -2,7 +2,7 @@
 
 namespace Shared
 {
-    public class Item
+    public class TrackWrap
     {
         public DateTime added_at { get; set; }
         public AddedBy added_by { get; set; }

@@ -52,6 +52,7 @@
     <ProjectReference Include="Database\Database.csproj" />
     <ProjectReference Include="Napster\Napster.csproj" />
     <ProjectReference Include="Spotify\Spotify.csproj" />
+    <ProjectReference Include="Youtube\Youtube.csproj" />
   </ItemGroup>
 
 </Project>

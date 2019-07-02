@@ -40,17 +40,18 @@ namespace Shared
             return dto;
         }
 
-        public async Task<PlaylistsRootObject> GetAllPlaylist<TModel>(Guid sessionId)
+        public async Task<PlaylistsRootObject> GetAllPlaylist(Guid sessionId)
         {
             Database.Player player = playerStore.GetLoggedPlayer(sessionId);
-            player.PersonnalPlaylists.Select(x => new PlaylistDto
+            PlaylistsRootObject playlistRootObject = new PlaylistsRootObject();
+            playlistRootObject.playlists = new PlaylistsDto();
+            playlistRootObject.playlists.items = player.PersonnalPlaylists.Select(x => new PlaylistDto
             {
                 id = x.Id.ToString(),
                 description = x.Description,
                 name = x.Name,
-                tracks = x.Tracks.Select(z => new Track())
-            });
-
+            }).ToList();
+            return playlistRootObject;
         }
     }
 }
