@@ -25,9 +25,9 @@ namespace Spotify.Connections
         {
             this.client = client;
             this.access = access;
-            triggerReconnect += async (s, eAccess) =>
+            triggerReconnect += (s, eAccess) =>
             {
-                await Task.Delay(eAccess.ExpireIn - TimeSpan.FromSeconds(2));
+                Task.Delay(eAccess.ExpireIn - TimeSpan.FromSeconds(2));
                 ((SpotifyConnection)s).Connect();
             };
         }
