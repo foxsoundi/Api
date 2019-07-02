@@ -10,16 +10,20 @@ namespace Youtube
 {
     public class YoutubeConnection
     {
-        private readonly YouTubeService youtubeService;
+        private YouTubeService youtubeService;
 
-        public YoutubeConnection(YouTubeService youtubeService)
+        public YoutubeConnection()
+        {
+            
+        }
+
+        public void AddAndUseSecret(YoutubeSecrets apiKeys)
         {
             this.youtubeService = new YouTubeService(new BaseClientService.Initializer()
             {
-                ApiKey = "AIzaSyBzJjZEQWgHtJnk0yxBnPKxpRYU1F29HmE",
+                ApiKey = apiKeys.YoutubeId,
                 ApplicationName = this.GetType().ToString()
             });
-            
         }
 
         public async Task<string> GetVideoIdOf(string songToSearch)
@@ -37,16 +41,6 @@ namespace Youtube
             // matching videos, channels, and playlists.
             //searchListResponse.
             return searchListResponse.Items.First(i => i.Id.Kind == "youtube#video").Id.VideoId;
-
-            foreach (var searchResult in searchListResponse.Items)
-            {
-                switch (searchResult.Id.Kind)
-                {
-                    case "youtube#video":
-                        videos.Add(searchResult.Id.VideoId);
-                        break;
-                }
-            }
         }
     }
 }

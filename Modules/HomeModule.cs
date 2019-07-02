@@ -14,13 +14,15 @@ using Napster;
 using Newtonsoft.Json;
 using Shared;
 using Spotify.Connections;
+using Youtube;
 
 namespace Api
 {
     public class HomeModule : NancyModule
     {
-        public HomeModule(INancyEnvironment environnement, SpotifyConnection spotifyConnection,
-            NapsterConnection napsterConnection)
+        public HomeModule(SpotifyConnection spotifyConnection,
+                            NapsterConnection napsterConnection,
+                            YoutubeConnection youtubeConnection)
         {
             Get("/", _ => "Hello World!");
             Get("/ping", _ =>
@@ -32,7 +34,9 @@ namespace Api
             {
                 SpotifySecrets spotifySecret = this.Bind<SpotifySecrets>();
                 NapsterSecrets napsterSecrets = this.Bind<NapsterSecrets>();
+                YoutubeSecrets youtubeSecrets = this.Bind<YoutubeSecrets>();
                 spotifyConnection.AddAndUseSecret(spotifySecret);
+                youtubeConnection.AddAndUseSecret(youtubeSecrets);
                 return await spotifyConnection.Connect();
             });
         }

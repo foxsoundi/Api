@@ -15,6 +15,7 @@ using Nancy.TinyIoc;
 using Shared;
 using Spotify;
 using Spotify.Connections;
+using Youtube;
 
 namespace Api
 {
@@ -74,6 +75,8 @@ namespace Api
             container.Register<PlaylistStore>().UsingConstructor(() => new PlaylistStore(container.Resolve<FoxsoundiContext>(), container.Resolve<PlayerStore>())).AsSingleton();
             container.Register<PlayerConnection>()
                 .UsingConstructor(() => new PlayerConnection(container.Resolve<PlayerStore>())).AsSingleton();
+
+            container.Register<YoutubeConnection>().AsSingleton();
             //CORS Enable
             pipelines.AfterRequest.AddItemToEndOfPipeline((ctx) =>
             {

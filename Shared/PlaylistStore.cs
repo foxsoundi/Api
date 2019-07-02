@@ -45,12 +45,14 @@ namespace Shared
             Database.Player player = playerStore.GetLoggedPlayer(sessionId);
             PlaylistsRootObject playlistRootObject = new PlaylistsRootObject();
             playlistRootObject.playlists = new PlaylistsDto();
-            playlistRootObject.playlists.items = player.PersonnalPlaylists.Select(x => new PlaylistDto
-            {
-                id = x.Id.ToString(),
-                description = x.Description,
-                name = x.Name,
-            }).ToList();
+            playlistRootObject.playlists.items = player.PersonnalPlaylists.AsQueryable()
+                .Select((pp, index) => new PlaylistDto
+                {
+                    id = pp.Id.ToString(),
+                    description = pp.Description,
+                    name = pp.Name
+                }).ToList();
+
             return playlistRootObject;
         }
     }
