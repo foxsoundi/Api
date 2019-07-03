@@ -82,7 +82,7 @@ namespace Api
             {
                 ctx.Response.WithHeader("Access-Control-Allow-Origin", "*")
                     .WithHeader("Access-Control-Allow-Methods", "POST,GET")
-                    .WithHeader("Access-Control-Allow-Headers", "Accept, Origin, Content-type");
+                    .WithHeader("Access-Control-Allow-Headers", "Accept, Origin, Content-type, SessionId");
 
             });
             pipelines.OnError += (ctx, ex) =>

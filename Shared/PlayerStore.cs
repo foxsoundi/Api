@@ -22,8 +22,11 @@ namespace Shared
         {
             if (!AllUsersCredential().Any(p => p.CheckCredential(logDto)))
                 return LogIn.Failed;
-            //Credential hisCred = AllUsersCredential.Find(c => c.isTheSameThan(logDto));
+
             Database.Player userDb = dbContext.Players.FirstOrDefault(p => p.Email == logDto.Email);
+            if (userDb == null || userDb.Password != logDto.Password)
+                return LogIn.Failed;
+
             Profil user = new Profil(userDb);
             LoggedUsers.Add(user);
             return LogIn.Success;
